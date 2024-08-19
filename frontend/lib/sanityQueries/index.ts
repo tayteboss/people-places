@@ -39,7 +39,22 @@ export const siteSettingsQueryString = `
 
 export const homePageQueryString = `
 	*[_type == 'homePage'][0] {
-		...,
+		peopleSection {
+			peopleMedia {
+				asset-> {
+					playbackId,
+				},
+			},
+			peopleTagline
+		},
+		projectSection {
+			projectMedia {
+				asset-> {
+					playbackId,
+				},
+			},
+			projectTagline
+		},
 	}
 `;
 

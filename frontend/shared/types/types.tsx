@@ -1,52 +1,55 @@
 export type MediaType = {
-	mediaType: 'video' | 'image';
-	video: { asset: { playbackId: string } };
-	image: { asset: { url: string; metadata: { lqip: string } }; alt: string };
-	mobileImage?: { asset: { url: string; metadata: { lqip: string } } };
-	mobileVideo?: { asset: { playbackId: string } };
-	caption?: string;
+  asset: { playbackId: string };
 };
 
 export type TransitionsType = {
-	hidden: {
-		opacity: number;
-		transition: {
-			duration: number;
-		};
-	};
-	visible: {
-		opacity: number;
-		transition: {
-			duration: number;
-			delay?: number;
-		};
-	};
+  hidden: {
+    opacity: number;
+    transition: {
+      duration: number;
+    };
+  };
+  visible: {
+    opacity: number;
+    transition: {
+      duration: number;
+      delay?: number;
+    };
+  };
 };
 
 export type ButtonType = {
-	url: string;
-	pageReference: {
-		_ref: string;
-	};
-	title: string;
+  url: string;
+  pageReference: {
+    _ref: string;
+  };
+  title: string;
 };
 
 export type SlugType = {
-	current: string;
+  current: string;
 };
 
 export type SiteSettingsType = {};
 
 export type HomePageType = {
-	seoTitle: string;
-	seoDescription: string;
+  seoTitle: string;
+  seoDescription: string;
+  peopleSection: PeopleType;
+  projectSection: PlacesType;
 };
 
 export type WorkPageType = {
-	seoTitle: string;
-	seoDescription: string;
+  seoTitle: string;
+  seoDescription: string;
 };
 
-export type ProjectType = {
-	slug: SlugType;
+export type PlacesType = {
+  projectMedia: MediaType;
+  projectTagline: string;
+};
+
+export type PeopleType = {
+  peopleMedia: MediaType;
+  peopleTagline: string;
 };

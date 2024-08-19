@@ -6,6 +6,7 @@ export const GlobalStyles = createGlobalStyle`
 	:root {
 		--colour-white: ${theme.colours.white};
 		--colour-black: ${theme.colours.black};
+		--colour-yellow: ${theme.colours.yellow};
 		--font-default: ${theme.fonts.default};
 		--transition-speed-default: ${theme.transitionSpeed.default};
 		--transition-speed-fast: ${theme.transitionSpeed.fast};
@@ -37,7 +38,7 @@ export const GlobalStyles = createGlobalStyle`
 	}
 
 	html {
-		background: var(--colour-white);
+		background: var(--colour-black);
 		font-size: 16px;
 
 		&.no-scroll {
@@ -51,6 +52,7 @@ export const GlobalStyles = createGlobalStyle`
 
 	body {
 		position: relative;
+		background: var(--colour-yellow);
 	}
 
 	input,
@@ -85,64 +87,33 @@ export const GlobalStyles = createGlobalStyle`
 	h1,
 	.type-h1 {
 		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(48)};
+		line-height: ${pxToRem(55)};
+		color: var(--colour-yellow);
+		text-transform: uppercase;
+		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
+		-webkit-text-stroke: 1px black;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
+			font-size: ${pxToRem(24)};
 			line-height: ${pxToRem(28)};
 		}
 	}
 
 	h2,
-	.type-h2 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(48)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
-	}
-
+	.type-h2,
 	h3,
-	.type-h3 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(28)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
-	}
-
+	.type-h3,
 	h4,
 	.type-h4 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(28)};
+		font-size: ${pxToRem(32)};
+		line-height: ${pxToRem(37)};
+		color: var(--colour-yellow);
+		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
+		-webkit-text-stroke: 1px black;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
+			font-size: ${pxToRem(16)};
+			line-height: ${pxToRem(18)};
 		}
 	}
 
@@ -152,7 +123,15 @@ export const GlobalStyles = createGlobalStyle`
 	button,
 	div {
 		font-size: ${pxToRem(16)};
-		line-height: ${pxToRem(16)};
+		line-height: ${pxToRem(19)};
+		color: var(--colour-yellow);
+		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
+		-webkit-text-stroke: 1px black;
+
+		@media ${theme.mediaBreakpoints.tabletPortrait} {
+			font-size: ${pxToRem(12)};
+			line-height: ${pxToRem(14)};
+		}
 	}
 
 	mux-player {
