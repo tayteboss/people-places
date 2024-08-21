@@ -1,4 +1,5 @@
 import homePage from './homePage'
+import listItem from './listItem'
 import siteSettings from './siteSettings'
 
 export const schemaTypes = [
@@ -7,4 +8,7 @@ export const schemaTypes = [
 
   // Pages
   homePage,
+
+  //Documents
+  listItem,
 ]

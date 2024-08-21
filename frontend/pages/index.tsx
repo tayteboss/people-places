@@ -11,13 +11,14 @@ import {
   homePageQueryString,
   siteSettingsQueryString,
 } from "../lib/sanityQueries";
-import Content from "../components/blocks/Content";
 import Media from "../components/blocks/Media";
 import { useState } from "react";
+import Credits from "../components/blocks/Credits";
+import Title from "../components/blocks/Title";
 
 const PageWrapper = styled(motion.div)`
-  height: 100lvh;
   position: relative;
+  background: var(--colour-yellow);
 `;
 
 type Props = {
@@ -46,17 +47,27 @@ const Page = (props: Props) => {
         title={data?.seoTitle || ""}
         description={data?.seoDescription || ""}
       />
-      <Content
-        peopleTagline={data?.peopleSection?.peopleTagline}
-        placesTagline={data?.projectSection?.projectTagline}
+      <Title
         setPlacesIsActive={setPlacesIsActive}
         setPeopleIsActive={setPeopleIsActive}
         peopleIsActive={peopleIsActive}
         placesIsActive={placesIsActive}
       />
+      <Credits
+        isInactive={peopleIsActive || placesIsActive}
+        introduction={siteSettings?.introduction}
+        team={siteSettings?.team}
+        services={siteSettings?.services}
+        clients={siteSettings?.clients}
+        peopleLocationTitle={data?.peopleSection?.peopleLocationTitle}
+        peopleLocationAddress={data?.peopleSection?.peopleLocationAddress}
+        placesLocationTitle={data?.placesSection?.placesLocationTitle}
+        placesLocationAddress={data?.placesSection?.placesLocationAddress}
+        acknowledgementOfCountry={siteSettings?.acknowledgementOfCountry}
+      />
       <Media
         peopleMedia={data?.peopleSection?.peopleMedia}
-        placesMedia={data?.projectSection?.projectMedia}
+        placesMedia={data?.placesSection?.placesMedia}
         peopleIsActive={peopleIsActive}
         placesIsActive={placesIsActive}
       />

@@ -35,10 +35,20 @@ export default {
           type: 'mux.video',
         },
         {
-          title: 'Tagline',
-          name: 'peopleTagline',
+          title: 'Location Title',
+          name: 'peopleLocationTitle',
           type: 'string',
         },
+        {
+          title: 'Location Address',
+          name: 'peopleLocationAddress',
+          type: 'text',
+        },
+        // {
+        //   title: 'Tagline',
+        //   name: 'peopleTagline',
+        //   type: 'string',
+        // },
       ],
       preview: {
         select: {
@@ -56,24 +66,34 @@ export default {
     },
     {
       title: 'Places Section',
-      name: 'projectSection',
+      name: 'placesSection',
       type: 'object',
       fields: [
         {
           title: 'Media',
-          name: 'projectMedia',
+          name: 'placesMedia',
           type: 'mux.video',
         },
         {
-          title: 'Tagline',
-          name: 'projectTagline',
+          title: 'Location Title',
+          name: 'placesLocationTitle',
           type: 'string',
         },
+        {
+          title: 'Location Address',
+          name: 'placesLocationAddress',
+          type: 'text',
+        },
+        // {
+        //   title: 'Tagline',
+        //   name: 'projectTagline',
+        //   type: 'string',
+        // },
       ],
       preview: {
         select: {
-          media: 'projectMedia',
-          tagline: 'projectTagline',
+          media: 'placesMedia',
+          tagline: 'placesTagline',
         },
         prepare(selection) {
           const {media, tagline} = selection

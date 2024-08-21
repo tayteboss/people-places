@@ -34,26 +34,38 @@ export const mediaString = `
 export const siteSettingsQueryString = `
 	*[_type == 'siteSettings'][0] {
 		...,
+		clients[]-> {
+			...,
+		},
+		team[]-> {
+			...,
+		},
+		services[]-> {
+			...,
+		}
 	}
 `;
 
 export const homePageQueryString = `
 	*[_type == 'homePage'][0] {
 		peopleSection {
+		...,
 			peopleMedia {
 				asset-> {
 					playbackId,
 				},
 			},
-			peopleTagline
+			peopleLocationTitle,
+			peopleLocationAddress,
 		},
-		projectSection {
-			projectMedia {
+		placesSection {
+			placesMedia {
 				asset-> {
 					playbackId,
 				},
 			},
-			projectTagline
+			placesLocationTitle,
+			placesLocationAddress,
 		},
 	}
 `;

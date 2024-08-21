@@ -8,6 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 		--colour-black: ${theme.colours.black};
 		--colour-yellow: ${theme.colours.yellow};
 		--font-default: ${theme.fonts.default};
+		--font-regular: ${theme.fonts.regular};
 		--transition-speed-default: ${theme.transitionSpeed.default};
 		--transition-speed-fast: ${theme.transitionSpeed.fast};
 		--transition-speed-extra-fast: ${theme.transitionSpeed.extraFast};
@@ -86,12 +87,11 @@ export const GlobalStyles = createGlobalStyle`
 
 	h1,
 	.type-h1 {
+		font-family: var(--font-default);
 		font-size: ${pxToRem(48)};
 		line-height: ${pxToRem(55)};
 		color: var(--colour-yellow);
 		text-transform: uppercase;
-		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
-		-webkit-text-stroke: 1px black;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(24)};
@@ -105,11 +105,11 @@ export const GlobalStyles = createGlobalStyle`
 	.type-h3,
 	h4,
 	.type-h4 {
+		font-family: var(--font-default);
 		font-size: ${pxToRem(32)};
 		line-height: ${pxToRem(37)};
 		color: var(--colour-yellow);
-		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
-		-webkit-text-stroke: 1px black;
+		text-transform: uppercase;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(16)};
@@ -122,16 +122,20 @@ export const GlobalStyles = createGlobalStyle`
 	a,
 	button,
 	div {
-		font-size: ${pxToRem(16)};
-		line-height: ${pxToRem(19)};
-		color: var(--colour-yellow);
-		/* text-shadow: .1rem .1rem .1rem var(--colour-yellow); */
-		-webkit-text-stroke: 1px black;
+		font-family: var(--font-regular);
+		font-size: ${pxToRem(12)};
+		line-height: ${pxToRem(14)};
+		font-weight: 200;
+		color: var(--colour-black);
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(12)};
 			line-height: ${pxToRem(14)};
 		}
+	}
+
+	.outline-text {
+		-webkit-text-stroke: 1px black;
 	}
 
 	mux-player {

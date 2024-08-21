@@ -30,13 +30,25 @@ export type SlugType = {
   current: string;
 };
 
-export type SiteSettingsType = {};
+export type ListItemType = {
+  title: string;
+  name: string;
+  link?: string;
+};
+
+export type SiteSettingsType = {
+  introduction: string;
+  team: ListItemType[];
+  services: ListItemType[];
+  clients: ListItemType[];
+  acknowledgementOfCountry: string;
+};
 
 export type HomePageType = {
   seoTitle: string;
   seoDescription: string;
   peopleSection: PeopleType;
-  projectSection: PlacesType;
+  placesSection: PlacesType;
 };
 
 export type WorkPageType = {
@@ -45,11 +57,15 @@ export type WorkPageType = {
 };
 
 export type PlacesType = {
-  projectMedia: MediaType;
-  projectTagline: string;
+  placesMedia: MediaType;
+  placesTagline?: string;
+  placesLocationTitle: string;
+  placesLocationAddress: string;
 };
 
 export type PeopleType = {
   peopleMedia: MediaType;
-  peopleTagline: string;
+  peopleTagline?: string;
+  peopleLocationTitle: string;
+  peopleLocationAddress: string;
 };

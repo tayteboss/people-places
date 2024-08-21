@@ -3,7 +3,7 @@ import { PeopleType, PlacesType } from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react";
 
 const MediaWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -28,16 +28,13 @@ const InnerWrapper = styled.div<{ $isActive: boolean }>`
 
 type Props = {
   peopleMedia: PeopleType["peopleMedia"];
-  placesMedia: PlacesType["projectMedia"];
+  placesMedia: PlacesType["placesMedia"];
   peopleIsActive: boolean;
   placesIsActive: boolean;
 };
 
 const Media = (props: Props) => {
   const { peopleMedia, placesMedia, peopleIsActive, placesIsActive } = props;
-
-  console.log("placesMedia", placesMedia);
-  console.log("placesIsActive", placesIsActive);
 
   return (
     <MediaWrapper>

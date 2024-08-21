@@ -6,6 +6,7 @@ export const theme = {
   },
   fonts: {
     default: "Onsite Medium",
+    regular: "Onsite Reg",
   },
   mediaBreakpoints: {
     desktop: "(min-width: 1680px)",
