@@ -11,19 +11,50 @@ const TitleWrapper = styled.div`
   position: fixed;
   z-index: 20;
   pointer-events: none;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    flex-direction: column;
+  }
 `;
 
-const TriggerWrapper = styled(motion.div)`
+const DesktopTriggerWrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50vw;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: none;
+  }
+`;
+
+const MobileTriggerWrapper = styled.div`
+  display: none;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: block;
+    height: 50dvh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:not(:first-child) {
+      border-top: 1px solid var(--colour-black);
+    }
+  }
 `;
 
 const Trigger = styled.button<{ $readyToInteract: boolean }>`
   white-space: pre;
   text-align: center;
   pointer-events: ${(props) => (props.$readyToInteract ? "all" : "none")};
+`;
+
+const Comma = styled.span`
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: none;
+  }
 `;
 
 const wrapperVariants = {
@@ -64,11 +95,15 @@ const Title = (props: Props) => {
 
   return (
     <TitleWrapper>
-      <TriggerWrapper
+      <DesktopTriggerWrapper
         variants={wrapperVariants}
         initial="hidden"
         animate="visible"
         onAnimationComplete={() => setReadyToInteract(true)}
+        onClick={() => {
+          setPeopleIsActive(true);
+          setPlacesIsActive(false);
+        }}
       >
         {!placesIsActive && (
           <Trigger
@@ -77,11 +112,11 @@ const Title = (props: Props) => {
             onMouseOut={() => setPeopleIsActive(false)}
             $readyToInteract={readyToInteract}
           >
-            People,{" "}
+            People<Comma>,</Comma>{" "}
           </Trigger>
         )}
-      </TriggerWrapper>
-      <TriggerWrapper
+      </DesktopTriggerWrapper>
+      <DesktopTriggerWrapper
         variants={wrapperVariants}
         initial="hidden"
         animate="visible"
@@ -96,7 +131,38 @@ const Title = (props: Props) => {
             Places
           </Trigger>
         )}
-      </TriggerWrapper>
+      </DesktopTriggerWrapper>
+
+      {/* Mobile Here */}
+      <MobileTriggerWrapper
+        onClick={() => {
+          setPeopleIsActive(!peopleIsActive);
+          setPlacesIsActive(false);
+        }}
+      >
+        <Trigger
+          className="type-h1 outline-text"
+          $readyToInteract={readyToInteract}
+        >
+          People<Comma>,</Comma>{" "}
+        </Trigger>
+      </MobileTriggerWrapper>
+      <MobileTriggerWrapper
+        variants={wrapperVariants}
+        initial="hidden"
+        animate="visible"
+        onClick={() => {
+          setPlacesIsActive(!placesIsActive);
+          setPeopleIsActive(false);
+        }}
+      >
+        <Trigger
+          className="type-h1 outline-text"
+          $readyToInteract={readyToInteract}
+        >
+          Places
+        </Trigger>
+      </MobileTriggerWrapper>
     </TitleWrapper>
   );
 };

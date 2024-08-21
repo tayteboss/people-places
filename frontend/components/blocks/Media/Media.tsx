@@ -15,6 +15,13 @@ const MediaWrapper = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const InnerWrapper = styled.div<{ $isActive: boolean }>`
@@ -24,6 +31,12 @@ const InnerWrapper = styled.div<{ $isActive: boolean }>`
   height: 100%;
   width: 100%;
   opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    position: relative;
+    top: unset;
+    left: unset;
+  }
 `;
 
 type Props = {
@@ -44,6 +57,7 @@ const Media = (props: Props) => {
           playbackId={peopleMedia?.asset?.playbackId}
           autoPlay="muted"
           loop={true}
+          paused={!peopleIsActive}
           thumbnailTime={1}
           preload="auto"
           muted
@@ -57,6 +71,7 @@ const Media = (props: Props) => {
           playbackId={placesMedia?.asset?.playbackId}
           autoPlay="muted"
           loop={true}
+          paused={!placesIsActive}
           thumbnailTime={1}
           preload="auto"
           muted
