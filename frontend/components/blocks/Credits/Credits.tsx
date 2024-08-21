@@ -7,7 +7,7 @@ import {
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 import pxToRem from "../../../utils/pxToRem";
 import formatHTML from "../../../utils/formatHTML";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const CreditsWrapper = styled.div<{ $isInactive: boolean }>`
   position: relative;
@@ -53,18 +53,37 @@ const Credits = (props: Props) => {
     isInactive,
   } = props;
 
+  const [isReady, setIsReady] = useState(false);
+
   const lenis = useLenis();
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (lenis) {
       lenis.options.infinite = true; // Enable infinite scroll
       lenis.options.syncTouch = true; // Sync touch scroll
+      lenis.scrollTo(0, 0, 0);
+      timer = setTimeout(() => {
+        lenis.stop();
+      }, 1000);
+      timer = setTimeout(() => {
+        lenis.start();
+      }, 3000);
     }
+    return () => clearTimeout(timer);
   }, [lenis]);
 
   return (
     <>
-      <CreditsWrapper $isInactive={isInactive}>
+      <CreditsWrapper $isInactive={isInactive || !isReady}>
         <ReactLenis root>
           <Inner>
             <Section title="People, Places" content={introduction} useDark />
