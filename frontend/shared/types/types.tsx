@@ -56,8 +56,15 @@ export type WorkPageType = {
   seoDescription: string;
 };
 
+export type CaptionType = {
+  caption: string;
+  start: number;
+  end: number;
+};
+
 export type PlacesType = {
   placesMedia: MediaType;
+  placesCaptions: CaptionType[];
   placesTagline?: string;
   placesLocationTitle: string;
   placesLocationAddress: string;
@@ -65,6 +72,7 @@ export type PlacesType = {
 
 export type PeopleType = {
   peopleMedia: MediaType;
+  peopleCaptions: CaptionType[];
   peopleTagline?: string;
   peopleLocationTitle: string;
   peopleLocationAddress: string;

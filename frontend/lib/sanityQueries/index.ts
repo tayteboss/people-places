@@ -55,6 +55,9 @@ export const homePageQueryString = `
 					playbackId,
 				},
 			},
+			peopleCaptions[] -> {
+				...
+			},
 			peopleLocationTitle,
 			peopleLocationAddress,
 		},
@@ -63,6 +66,9 @@ export const homePageQueryString = `
 				asset-> {
 					playbackId,
 				},
+			},
+			placesCaptions[] -> {
+				...
 			},
 			placesLocationTitle,
 			placesLocationAddress,

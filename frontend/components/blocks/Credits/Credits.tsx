@@ -99,6 +99,7 @@ const Credits = (props: Props) => {
             <Section
               title="Acknowledgement of Country"
               content={acknowledgementOfCountry}
+              useDark
             />
           </Inner>
         </ReactLenis>
@@ -118,6 +119,7 @@ const SectionWrapper = styled.div`
 
 const SectionTitle = styled.h4`
   color: var(--colour-black);
+  text-transform: uppercase;
 `;
 
 const SectionContent = styled.p<{ $useDark: boolean }>`
@@ -201,6 +203,7 @@ const LocationInner = styled.div`
 
 const LocationTitle = styled.h4`
   margin-bottom: ${pxToRem(10)};
+  text-transform: uppercase;
 `;
 
 const LocationContent = styled.div`

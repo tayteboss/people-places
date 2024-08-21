@@ -15,6 +15,7 @@ import Media from "../components/blocks/Media";
 import { useState } from "react";
 import Credits from "../components/blocks/Credits";
 import Title from "../components/blocks/Title";
+import SubTitles from "../components/blocks/SubTitles";
 
 const PageWrapper = styled(motion.div)`
   position: relative;
@@ -32,9 +33,10 @@ const Page = (props: Props) => {
 
   const [peopleIsActive, setPeopleIsActive] = useState(false);
   const [placesIsActive, setPlacesIsActive] = useState(false);
+  const [peopleVideoTimeStamp, setPeopleVideoTimeStamp] = useState(0);
+  const [placesVideoTimeStamp, setPlacesVideoTimeStamp] = useState(0);
 
   console.log("data", data);
-  console.log("siteSettings", siteSettings);
 
   return (
     <PageWrapper
@@ -70,6 +72,16 @@ const Page = (props: Props) => {
         placesMedia={data?.placesSection?.placesMedia}
         peopleIsActive={peopleIsActive}
         placesIsActive={placesIsActive}
+        setPeopleVideoTimeStamp={setPeopleVideoTimeStamp}
+        setPlacesVideoTimeStamp={setPlacesVideoTimeStamp}
+      />
+      <SubTitles
+        peopleVideoTimeStamp={peopleVideoTimeStamp}
+        placesVideoTimeStamp={placesVideoTimeStamp}
+        peopleIsActive={peopleIsActive}
+        placesIsActive={placesIsActive}
+        peopleCaptions={data?.peopleSection?.peopleCaptions}
+        placesCaptions={data?.placesSection?.placesCaptions}
       />
     </PageWrapper>
   );

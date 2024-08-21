@@ -35,6 +35,17 @@ export default {
           type: 'mux.video',
         },
         {
+          title: 'Captions',
+          name: 'peopleCaptions',
+          type: 'array',
+          of: [
+            {
+              type: 'reference',
+              to: [{type: 'caption'}],
+            },
+          ],
+        },
+        {
           title: 'Location Title',
           name: 'peopleLocationTitle',
           type: 'string',
@@ -44,11 +55,6 @@ export default {
           name: 'peopleLocationAddress',
           type: 'text',
         },
-        // {
-        //   title: 'Tagline',
-        //   name: 'peopleTagline',
-        //   type: 'string',
-        // },
       ],
       preview: {
         select: {
@@ -75,6 +81,17 @@ export default {
           type: 'mux.video',
         },
         {
+          title: 'Captions',
+          name: 'placesCaptions',
+          type: 'array',
+          of: [
+            {
+              type: 'reference',
+              to: [{type: 'caption'}],
+            },
+          ],
+        },
+        {
           title: 'Location Title',
           name: 'placesLocationTitle',
           type: 'string',
@@ -84,11 +101,6 @@ export default {
           name: 'placesLocationAddress',
           type: 'text',
         },
-        // {
-        //   title: 'Tagline',
-        //   name: 'projectTagline',
-        //   type: 'string',
-        // },
       ],
       preview: {
         select: {

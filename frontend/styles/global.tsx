@@ -109,7 +109,6 @@ export const GlobalStyles = createGlobalStyle`
 		font-size: ${pxToRem(32)};
 		line-height: ${pxToRem(37)};
 		color: var(--colour-yellow);
-		text-transform: uppercase;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(16)};
@@ -136,6 +135,7 @@ export const GlobalStyles = createGlobalStyle`
 
 	.outline-text {
 		-webkit-text-stroke: 1px black;
+		font-weight: 200;
 	}
 
 	mux-player {

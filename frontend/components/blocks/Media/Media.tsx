@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { PeopleType, PlacesType } from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react";
+import { useEffect, useRef, useState } from "react";
 
 const MediaWrapper = styled.div`
   position: fixed;
@@ -44,42 +45,87 @@ type Props = {
   placesMedia: PlacesType["placesMedia"];
   peopleIsActive: boolean;
   placesIsActive: boolean;
+  setPeopleVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
+  setPlacesVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Media = (props: Props) => {
-  const { peopleMedia, placesMedia, peopleIsActive, placesIsActive } = props;
+  const {
+    peopleMedia,
+    placesMedia,
+    peopleIsActive,
+    placesIsActive,
+    setPeopleVideoTimeStamp,
+    setPlacesVideoTimeStamp,
+  } = props;
 
   return (
     <MediaWrapper>
       <InnerWrapper $isActive={peopleIsActive}>
-        <MuxPlayer
-          streamType="on-demand"
+        <VideoSlot
           playbackId={peopleMedia?.asset?.playbackId}
-          autoPlay="muted"
-          loop={true}
-          paused={!peopleIsActive}
-          thumbnailTime={1}
-          preload="auto"
-          muted
-          playsInline={true}
-          // poster={`${posterUrl}`}
+          isActive={peopleIsActive}
+          setVideoTimeStamp={setPeopleVideoTimeStamp}
         />
       </InnerWrapper>
       <InnerWrapper $isActive={placesIsActive}>
-        <MuxPlayer
-          streamType="on-demand"
+        <VideoSlot
           playbackId={placesMedia?.asset?.playbackId}
+          isActive={placesIsActive}
+          setVideoTimeStamp={setPlacesVideoTimeStamp}
+        />
+      </InnerWrapper>
+    </MediaWrapper>
+  );
+};
+
+type SlotProps = {
+  playbackId: string;
+  isActive: boolean;
+  setVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const VideoSlot = ({ playbackId, isActive, setVideoTimeStamp }: SlotProps) => {
+  const playerRef = useRef<any>(null);
+  const [hasHovered, setHasHovered] = useState<boolean>(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playerRef.current && isActive) {
+        setVideoTimeStamp(playerRef.current.currentTime);
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [playerRef, isActive, setVideoTimeStamp]);
+
+  useEffect(() => {
+    if (isActive && !hasHovered) {
+      // First hover, reset video to start
+      if (playerRef.current) {
+        playerRef.current.currentTime = 0;
+      }
+      setHasHovered(true);
+    }
+  }, [isActive, hasHovered]);
+
+  return (
+    <>
+      {playbackId && (
+        <MuxPlayer
+          ref={playerRef}
+          streamType="on-demand"
+          playbackId={playbackId}
           autoPlay="muted"
           loop={true}
-          paused={!placesIsActive}
+          paused={!isActive}
           thumbnailTime={1}
           preload="auto"
           muted
           playsInline={true}
-          // poster={`${posterUrl}`}
         />
-      </InnerWrapper>
-    </MediaWrapper>
+      )}
+    </>
   );
 };
 
