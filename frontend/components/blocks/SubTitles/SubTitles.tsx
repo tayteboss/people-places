@@ -12,7 +12,11 @@ const SubTitlesWrapper = styled.div`
   max-width: ${pxToRem(900)};
   width: 100%;
   padding: 0 ${pxToRem(32)};
-  z-index: 10;
+  z-index: 20;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    position: absolute;
+  }
 `;
 
 const Captions = styled.h2``;

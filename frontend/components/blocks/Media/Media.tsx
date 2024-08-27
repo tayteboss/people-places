@@ -18,10 +18,7 @@ const MediaWrapper = styled.div`
   }
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
   }
 `;
 
@@ -49,7 +46,7 @@ type Props = {
   setPlacesVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Media = (props: Props) => {
+export const Media = (props: Props) => {
   const {
     peopleMedia,
     placesMedia,
@@ -85,7 +82,11 @@ type SlotProps = {
   setVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const VideoSlot = ({ playbackId, isActive, setVideoTimeStamp }: SlotProps) => {
+export const VideoSlot = ({
+  playbackId,
+  isActive,
+  setVideoTimeStamp,
+}: SlotProps) => {
   const playerRef = useRef<any>(null);
   const [hasHovered, setHasHovered] = useState<boolean>(false);
 
@@ -128,5 +129,3 @@ const VideoSlot = ({ playbackId, isActive, setVideoTimeStamp }: SlotProps) => {
     </>
   );
 };
-
-export default Media;

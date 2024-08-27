@@ -261,7 +261,7 @@ export const GlobalStyles = createGlobalStyle`
 		display: block;
 	}
 
-
+/* 
 	html.lenis {
 		height: auto;
 	}
@@ -280,5 +280,5 @@ export const GlobalStyles = createGlobalStyle`
 
 	.lenis.lenis-scrolling iframe {
 		pointer-events: none;
-	}
+	} */
 `;

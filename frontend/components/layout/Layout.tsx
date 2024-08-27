@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import Header from "../common/Header";
-import Footer from "../common/Footer";
 import { ReactNode } from "react";
 
 const Main = styled.main``;
@@ -15,7 +13,6 @@ const Layout = (props: Props) => {
   return (
     <>
       <Main>{children}</Main>
-      {/* <Footer /> */}
     </>
   );
 };

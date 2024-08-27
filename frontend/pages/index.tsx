@@ -11,11 +11,14 @@ import {
   homePageQueryString,
   siteSettingsQueryString,
 } from "../lib/sanityQueries";
-import Media from "../components/blocks/Media";
 import { useState } from "react";
 import Credits from "../components/blocks/Credits";
 import Title from "../components/blocks/Title";
 import SubTitles from "../components/blocks/SubTitles";
+import MobileLayout from "../components/blocks/MobileLayout";
+import { Media } from "../components/blocks/Media/Media";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import useViewportWidth from "../hooks/useViewportWidth";
 
 const PageWrapper = styled(motion.div)`
   position: relative;
@@ -33,8 +36,13 @@ const Page = (props: Props) => {
 
   const [peopleIsActive, setPeopleIsActive] = useState(false);
   const [placesIsActive, setPlacesIsActive] = useState(false);
+  const [informationIsActive, setInformationIsActive] = useState(false);
   const [peopleVideoTimeStamp, setPeopleVideoTimeStamp] = useState(0);
   const [placesVideoTimeStamp, setPlacesVideoTimeStamp] = useState(0);
+  const [readyToInteract, setReadyToInteract] = useState(false);
+
+  const viewport = useViewportWidth();
+  const isMobile = viewport === "mobile" || viewport === "tabletPortrait";
 
   console.log("data", data);
 
@@ -49,11 +57,39 @@ const Page = (props: Props) => {
         title={data?.seoTitle || ""}
         description={data?.seoDescription || ""}
       />
+      <MobileLayout
+        setPlacesIsActive={setPlacesIsActive}
+        setPeopleIsActive={setPeopleIsActive}
+        setInformationIsActive={setInformationIsActive}
+        peopleIsActive={peopleIsActive}
+        placesIsActive={placesIsActive}
+        informationIsActive={informationIsActive}
+        peopleMedia={data?.peopleSection?.peopleMedia}
+        placesMedia={data?.placesSection?.placesMedia}
+        setPeopleVideoTimeStamp={setPeopleVideoTimeStamp}
+        setPlacesVideoTimeStamp={setPlacesVideoTimeStamp}
+        peopleVideoTimeStamp={peopleVideoTimeStamp}
+        placesVideoTimeStamp={placesVideoTimeStamp}
+        peopleCaptions={data?.peopleSection?.peopleCaptions}
+        placesCaptions={data?.placesSection?.placesCaptions}
+        introduction={siteSettings?.introduction}
+        team={siteSettings?.team}
+        services={siteSettings?.services}
+        clients={siteSettings?.clients}
+        peopleLocationTitle={data?.peopleSection?.peopleLocationTitle}
+        peopleLocationAddress={data?.peopleSection?.peopleLocationAddress}
+        placesLocationTitle={data?.placesSection?.placesLocationTitle}
+        placesLocationAddress={data?.placesSection?.placesLocationAddress}
+        acknowledgementOfCountry={siteSettings?.acknowledgementOfCountry}
+        readyToInteract={readyToInteract}
+      />
       <Title
         setPlacesIsActive={setPlacesIsActive}
         setPeopleIsActive={setPeopleIsActive}
         peopleIsActive={peopleIsActive}
         placesIsActive={placesIsActive}
+        readyToInteract={readyToInteract}
+        setReadyToInteract={setReadyToInteract}
       />
       <Credits
         isInactive={peopleIsActive || placesIsActive}
@@ -66,6 +102,7 @@ const Page = (props: Props) => {
         placesLocationTitle={data?.placesSection?.placesLocationTitle}
         placesLocationAddress={data?.placesSection?.placesLocationAddress}
         acknowledgementOfCountry={siteSettings?.acknowledgementOfCountry}
+        destroyScroll={isMobile}
       />
       <Media
         peopleMedia={data?.peopleSection?.peopleMedia}

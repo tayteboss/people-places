@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 const TitleWrapper = styled.div`
   height: 100%;
@@ -25,23 +24,6 @@ const DesktopTriggerWrapper = styled(motion.div)`
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     display: none;
-  }
-`;
-
-const MobileTriggerWrapper = styled.div`
-  display: none;
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    display: block;
-    height: 50dvh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:not(:first-child) {
-      border-top: 1px solid var(--colour-black);
-    }
   }
 `;
 
@@ -81,6 +63,8 @@ type Props = {
   placesIsActive: boolean;
   setPeopleIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
+  readyToInteract: boolean;
 };
 
 const Title = (props: Props) => {
@@ -89,9 +73,9 @@ const Title = (props: Props) => {
     placesIsActive,
     setPeopleIsActive,
     setPlacesIsActive,
+    setReadyToInteract,
+    readyToInteract,
   } = props;
-
-  const [readyToInteract, setReadyToInteract] = useState(false);
 
   return (
     <TitleWrapper>
@@ -132,37 +116,6 @@ const Title = (props: Props) => {
           </Trigger>
         )}
       </DesktopTriggerWrapper>
-
-      {/* Mobile Here */}
-      <MobileTriggerWrapper
-        onClick={() => {
-          setPeopleIsActive(!peopleIsActive);
-          setPlacesIsActive(false);
-        }}
-      >
-        <Trigger
-          className="type-h1 outline-text"
-          $readyToInteract={readyToInteract}
-        >
-          People<Comma>,</Comma>{" "}
-        </Trigger>
-      </MobileTriggerWrapper>
-      <MobileTriggerWrapper
-        variants={wrapperVariants}
-        initial="hidden"
-        animate="visible"
-        onClick={() => {
-          setPlacesIsActive(!placesIsActive);
-          setPeopleIsActive(false);
-        }}
-      >
-        <Trigger
-          className="type-h1 outline-text"
-          $readyToInteract={readyToInteract}
-        >
-          Places
-        </Trigger>
-      </MobileTriggerWrapper>
     </TitleWrapper>
   );
 };

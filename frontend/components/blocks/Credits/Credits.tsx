@@ -15,6 +15,10 @@ const CreditsWrapper = styled.div<{ $isInactive: boolean }>`
   padding-top: calc(100vh + 80px);
   padding-bottom: calc(100vh + 80px);
   opacity: ${(props) => (props.$isInactive ? 0 : 1)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: none;
+  }
 `;
 
 const Inner = styled.div`
@@ -51,6 +55,7 @@ const Credits = (props: Props) => {
     placesLocationAddress,
     acknowledgementOfCountry,
     isInactive,
+    destroyScroll,
   } = props;
 
   const [isReady, setIsReady] = useState(false);
@@ -80,6 +85,12 @@ const Credits = (props: Props) => {
     }
     return () => clearTimeout(timer);
   }, [lenis]);
+
+  useEffect(() => {
+    if (destroyScroll && lenis) {
+      lenis.destroy();
+    }
+  }, [destroyScroll, lenis]);
 
   return (
     <>
@@ -115,6 +126,10 @@ const SectionWrapper = styled.div`
   align-items: center;
   gap: ${pxToRem(48)};
   width: 30vw;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    width: 100%;
+  }
 `;
 
 const SectionTitle = styled.h4`
@@ -160,7 +175,7 @@ const ListName = styled.p`
   white-space: nowrap;
 `;
 
-const Section = (props: {
+export const Section = (props: {
   title: string;
   content?: string;
   list?: ListItemType[];
@@ -193,6 +208,10 @@ const Section = (props: {
 const LocationSectionWrapper = styled.div`
   display: flex;
   width: 33vw;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    width: 100%;
+  }
 `;
 
 const LocationInner = styled.div`
@@ -210,7 +229,7 @@ const LocationContent = styled.div`
   opacity: 0.25;
 `;
 
-const LocationSection = (props: {
+export const LocationSection = (props: {
   title1: string;
   title2: string;
   address1: string;
