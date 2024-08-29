@@ -83,14 +83,6 @@ const Credits = (props: Props) => {
       timer = setTimeout(() => {
         lenis.start();
       }, 3000);
-
-      timer = setTimeout(() => {
-        lenis.scrollTo("bottom", {
-          duration: 30,
-          easing: (t) => t,
-          lock: false,
-        });
-      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [lenis]);

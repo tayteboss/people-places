@@ -88,7 +88,7 @@ export const GlobalStyles = createGlobalStyle`
 	h1,
 	.type-h1 {
 		font-family: var(--font-default);
-		font-size: ${pxToRem(64)};
+		font-size: ${pxToRem(54)};
 		line-height: normal;
 		color: var(--colour-yellow);
 		text-transform: uppercase;
