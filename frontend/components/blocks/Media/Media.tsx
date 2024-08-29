@@ -44,7 +44,6 @@ type Props = {
   placesIsActive: boolean;
   setPeopleVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
   setPlacesVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
-  muted: boolean;
 };
 
 export const Media = (props: Props) => {
@@ -55,7 +54,6 @@ export const Media = (props: Props) => {
     placesIsActive,
     setPeopleVideoTimeStamp,
     setPlacesVideoTimeStamp,
-    muted,
   } = props;
 
   return (
@@ -65,7 +63,6 @@ export const Media = (props: Props) => {
           playbackId={peopleMedia?.asset?.playbackId}
           isActive={peopleIsActive}
           setVideoTimeStamp={setPeopleVideoTimeStamp}
-          muted={muted}
         />
       </InnerWrapper>
       <InnerWrapper $isActive={placesIsActive}>
@@ -73,7 +70,6 @@ export const Media = (props: Props) => {
           playbackId={placesMedia?.asset?.playbackId}
           isActive={placesIsActive}
           setVideoTimeStamp={setPlacesVideoTimeStamp}
-          muted={muted}
         />
       </InnerWrapper>
     </MediaWrapper>
@@ -84,14 +80,12 @@ type SlotProps = {
   playbackId: string;
   isActive: boolean;
   setVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
-  muted: boolean;
 };
 
 export const VideoSlot = ({
   playbackId,
   isActive,
   setVideoTimeStamp,
-  muted,
 }: SlotProps) => {
   const playerRef = useRef<any>(null);
   const [hasHovered, setHasHovered] = useState<boolean>(false);
@@ -116,18 +110,6 @@ export const VideoSlot = ({
     }
   }, [isActive, hasHovered]);
 
-  useEffect(() => {
-    if (muted) {
-      if (playerRef.current) {
-        playerRef.current.muted = true;
-      }
-    } else {
-      if (playerRef.current) {
-        playerRef.current.muted = false;
-      }
-    }
-  }, [muted, playerRef]);
-
   return (
     <>
       {playbackId && (
@@ -140,7 +122,7 @@ export const VideoSlot = ({
           paused={!isActive}
           thumbnailTime={1}
           preload="auto"
-          muted={muted}
+          muted={true}
           playsInline={true}
         />
       )}

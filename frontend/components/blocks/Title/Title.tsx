@@ -77,8 +77,6 @@ type Props = {
   setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
   readyToInteract: boolean;
-  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
-  muted: boolean;
 };
 
 const Title = (props: Props) => {
@@ -89,8 +87,6 @@ const Title = (props: Props) => {
     setPlacesIsActive,
     setReadyToInteract,
     readyToInteract,
-    setMuted,
-    muted,
   } = props;
 
   return (
@@ -112,11 +108,9 @@ const Title = (props: Props) => {
               onMouseOver={() => setPeopleIsActive(true)}
               onMouseOut={() => setPeopleIsActive(false)}
               $readyToInteract={readyToInteract}
-              onClick={() => setMuted(!muted)}
             >
               People<Comma>,</Comma>{" "}
             </Trigger>
-            <MuteHint>Click to {muted ? "mute" : "unmute"}</MuteHint>
           </Inner>
         )}
       </DesktopTriggerWrapper>
@@ -132,11 +126,9 @@ const Title = (props: Props) => {
               onMouseOver={() => setPlacesIsActive(true)}
               onMouseOut={() => setPlacesIsActive(false)}
               $readyToInteract={readyToInteract}
-              onClick={() => setMuted(!muted)}
             >
               Places
             </Trigger>
-            <MuteHint>Click to {muted ? "mute" : "unmute"}</MuteHint>
           </Inner>
         )}
       </DesktopTriggerWrapper>

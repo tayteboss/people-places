@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import pxToRem from "../../../utils/pxToRem";
 import { CaptionType } from "../../../shared/types/types";
+import { motion } from "framer-motion";
 
-const SubTitlesWrapper = styled.div`
+const SubTitlesWrapper = styled(motion.div)`
   position: fixed;
   bottom: ${pxToRem(32)};
   left: 50%;
@@ -32,6 +33,25 @@ const TimestampHelperWrapper = styled.div`
 const TimestampHelper = styled.p`
   color: red;
 `;
+
+const wrapperVariants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      delay: 1,
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      delay: 1,
+    },
+  },
+};
 
 type Subtitle = {
   start: number;
@@ -80,7 +100,11 @@ const SubTitles = (props: Props) => {
   );
 
   return (
-    <SubTitlesWrapper>
+    <SubTitlesWrapper
+      variants={wrapperVariants}
+      initial="hidden"
+      animate={peopleIsActive || placesIsActive ? "visible" : "hidden"}
+    >
       {/* <TimestampHelperWrapper>
         <TimestampHelper>
           People Media Timestamp: {peopleVideoTimeStamp}

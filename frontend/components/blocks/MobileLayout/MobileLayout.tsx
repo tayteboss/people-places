@@ -10,6 +10,7 @@ import { VideoSlot } from "../Media/Media";
 import pxToRem from "../../../utils/pxToRem";
 import SubTitles from "../SubTitles";
 import { LocationSection, Section } from "../Credits/Credits";
+import { motion } from "framer-motion";
 
 const MobileLayoutWrapper = styled.div`
   display: none;
@@ -67,15 +68,12 @@ const Trigger = styled.button<{ $readyToInteract: boolean; $hide?: boolean }>`
   }
 `;
 
-const MediaInnerWrapper = styled.div<{ $isActive: boolean }>`
+const MediaInnerWrapper = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  opacity: ${(props) => (props.$isActive ? 1 : 0)};
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
 
   mux-player {
     width: 100%;
@@ -100,6 +98,25 @@ const InformationScroll = styled.div`
   align-items: center;
   gap: ${pxToRem(48)};
 `;
+
+const wrapperVariants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      delay: 0,
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      delay: 0.4,
+    },
+  },
+};
 
 type Props = {
   peopleIsActive: boolean;
@@ -126,8 +143,6 @@ type Props = {
   peopleCaptions: CaptionType[];
   placesCaptions: CaptionType[];
   readyToInteract: boolean;
-  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
-  muted: boolean;
 };
 
 const MobileLayout = (props: Props) => {
@@ -156,8 +171,6 @@ const MobileLayout = (props: Props) => {
     placesLocationAddress,
     acknowledgementOfCountry,
     readyToInteract,
-    setMuted,
-    muted,
   } = props;
 
   return (
@@ -168,7 +181,6 @@ const MobileLayout = (props: Props) => {
           setPeopleIsActive(!peopleIsActive);
           setPlacesIsActive(false);
           setInformationIsActive(false);
-          setMuted(false);
         }}
         $isActive={peopleIsActive}
       >
@@ -179,12 +191,15 @@ const MobileLayout = (props: Props) => {
         >
           People
         </Trigger>
-        <MediaInnerWrapper $isActive={peopleIsActive}>
+        <MediaInnerWrapper
+          variants={wrapperVariants}
+          initial="hidden"
+          animate={peopleIsActive ? "visible" : "hidden"}
+        >
           <VideoSlot
             playbackId={peopleMedia?.asset?.playbackId}
             isActive={peopleIsActive}
             setVideoTimeStamp={setPeopleVideoTimeStamp}
-            muted={muted}
           />
         </MediaInnerWrapper>
         {peopleIsActive && (
@@ -205,7 +220,6 @@ const MobileLayout = (props: Props) => {
           setPlacesIsActive(!placesIsActive);
           setPeopleIsActive(false);
           setInformationIsActive(false);
-          setMuted(false);
         }}
         $isActive={placesIsActive}
       >
@@ -216,7 +230,11 @@ const MobileLayout = (props: Props) => {
         >
           Places
         </Trigger>
-        <MediaInnerWrapper $isActive={placesIsActive}>
+        <MediaInnerWrapper
+          variants={wrapperVariants}
+          initial="hidden"
+          animate={placesIsActive ? "visible" : "hidden"}
+        >
           <VideoSlot
             playbackId={placesMedia?.asset?.playbackId}
             isActive={placesIsActive}

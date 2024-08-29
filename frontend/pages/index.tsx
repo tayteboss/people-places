@@ -39,7 +39,6 @@ const Page = (props: Props) => {
   const [peopleVideoTimeStamp, setPeopleVideoTimeStamp] = useState(0);
   const [placesVideoTimeStamp, setPlacesVideoTimeStamp] = useState(0);
   const [readyToInteract, setReadyToInteract] = useState(false);
-  const [muted, setMuted] = useState(true);
 
   const viewport = useViewportWidth();
   const isMobile = viewport === "mobile" || viewport === "tabletPortrait";
@@ -80,8 +79,6 @@ const Page = (props: Props) => {
         placesLocationAddress={data?.placesSection?.placesLocationAddress}
         acknowledgementOfCountry={siteSettings?.acknowledgementOfCountry}
         readyToInteract={readyToInteract}
-        setMuted={setMuted}
-        muted={muted}
       />
       <Title
         setPlacesIsActive={setPlacesIsActive}
@@ -90,8 +87,6 @@ const Page = (props: Props) => {
         placesIsActive={placesIsActive}
         readyToInteract={readyToInteract}
         setReadyToInteract={setReadyToInteract}
-        setMuted={setMuted}
-        muted={muted}
       />
       <Credits
         isInactive={peopleIsActive || placesIsActive}
@@ -113,7 +108,6 @@ const Page = (props: Props) => {
         placesIsActive={placesIsActive}
         setPeopleVideoTimeStamp={setPeopleVideoTimeStamp}
         setPlacesVideoTimeStamp={setPlacesVideoTimeStamp}
-        muted={muted}
       />
       <SubTitles
         peopleVideoTimeStamp={peopleVideoTimeStamp}
