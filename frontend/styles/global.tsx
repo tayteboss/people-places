@@ -88,14 +88,13 @@ export const GlobalStyles = createGlobalStyle`
 	h1,
 	.type-h1 {
 		font-family: var(--font-default);
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(55)};
+		font-size: ${pxToRem(64)};
+		line-height: normal;
 		color: var(--colour-yellow);
 		text-transform: uppercase;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(24)};
-			line-height: ${pxToRem(28)};
 		}
 	}
 
@@ -122,19 +121,29 @@ export const GlobalStyles = createGlobalStyle`
 	button,
 	div {
 		font-family: var(--font-regular);
-		font-size: ${pxToRem(12)};
-		line-height: ${pxToRem(14)};
+		font-size: ${pxToRem(14)};
+		line-height: normal;
 		font-weight: 200;
 		color: var(--colour-black);
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
 			font-size: ${pxToRem(12)};
-			line-height: ${pxToRem(14)};
 		}
 	}
 
 	.outline-text {
 		-webkit-text-stroke: 1px black;
+		font-weight: 200;
+
+		@media ${theme.mediaBreakpoints.tabletPortrait} {
+			-webkit-text-stroke: 0.5px black;
+		}
+	}
+
+	.outline-text-alt {
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		background: var(--colour-yellow);
+		color: var(--colour-yellow);
 		font-weight: 200;
 	}
 

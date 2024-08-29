@@ -41,6 +41,7 @@ type Props = {
   placesLocationAddress: HomePageType["placesSection"]["placesLocationAddress"];
   acknowledgementOfCountry: SiteSettingsType["acknowledgementOfCountry"];
   isInactive: boolean;
+  destroyScroll: boolean;
 };
 
 const Credits = (props: Props) => {
@@ -73,14 +74,22 @@ const Credits = (props: Props) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (lenis) {
-      lenis.options.infinite = true; // Enable infinite scroll
-      lenis.options.syncTouch = true; // Sync touch scroll
+      lenis.options.infinite = true;
+      lenis.options.syncTouch = true;
       lenis.scrollTo(0, 0, 0);
       timer = setTimeout(() => {
         lenis.stop();
       }, 1000);
       timer = setTimeout(() => {
         lenis.start();
+      }, 3000);
+
+      timer = setTimeout(() => {
+        lenis.scrollTo("bottom", {
+          duration: 30,
+          easing: (t) => t,
+          lock: false,
+        });
       }, 3000);
     }
     return () => clearTimeout(timer);

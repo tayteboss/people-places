@@ -17,7 +17,6 @@ import Title from "../components/blocks/Title";
 import SubTitles from "../components/blocks/SubTitles";
 import MobileLayout from "../components/blocks/MobileLayout";
 import { Media } from "../components/blocks/Media/Media";
-import useWindowDimensions from "../hooks/useWindowDimensions";
 import useViewportWidth from "../hooks/useViewportWidth";
 
 const PageWrapper = styled(motion.div)`
@@ -40,11 +39,10 @@ const Page = (props: Props) => {
   const [peopleVideoTimeStamp, setPeopleVideoTimeStamp] = useState(0);
   const [placesVideoTimeStamp, setPlacesVideoTimeStamp] = useState(0);
   const [readyToInteract, setReadyToInteract] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   const viewport = useViewportWidth();
   const isMobile = viewport === "mobile" || viewport === "tabletPortrait";
-
-  console.log("data", data);
 
   return (
     <PageWrapper
@@ -90,6 +88,8 @@ const Page = (props: Props) => {
         placesIsActive={placesIsActive}
         readyToInteract={readyToInteract}
         setReadyToInteract={setReadyToInteract}
+        setMuted={setMuted}
+        muted={muted}
       />
       <Credits
         isInactive={peopleIsActive || placesIsActive}
@@ -111,6 +111,7 @@ const Page = (props: Props) => {
         placesIsActive={placesIsActive}
         setPeopleVideoTimeStamp={setPeopleVideoTimeStamp}
         setPlacesVideoTimeStamp={setPlacesVideoTimeStamp}
+        muted={muted}
       />
       <SubTitles
         peopleVideoTimeStamp={peopleVideoTimeStamp}

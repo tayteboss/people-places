@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import pxToRem from "../../../utils/pxToRem";
 
 const TitleWrapper = styled.div`
   height: 100%;
@@ -20,7 +21,6 @@ const DesktopTriggerWrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50vw;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     display: none;
@@ -39,21 +39,33 @@ const Comma = styled.span`
   }
 `;
 
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${pxToRem(16)};
+`;
+
+const MuteHint = styled.p`
+  text-align: center;
+  color: var(--colour-yellow);
+`;
+
 const wrapperVariants = {
   hidden: {
-    opacity: 0,
+    width: "auto",
     transition: {
       duration: 0.5,
-      ease: "linear",
+      ease: "easeInOut",
     },
   },
   visible: {
-    opacity: [0, 0, 1, 1],
+    width: "50vw",
     transition: {
-      times: [0, 0.5, 0.5, 1],
-      duration: 1,
-      ease: "linear",
-      repeat: 2,
+      duration: 0.5,
+      ease: "easeInOut",
+      delay: 1,
     },
   },
 };
@@ -65,6 +77,8 @@ type Props = {
   setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
   readyToInteract: boolean;
+  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  muted: boolean;
 };
 
 const Title = (props: Props) => {
@@ -75,6 +89,8 @@ const Title = (props: Props) => {
     setPlacesIsActive,
     setReadyToInteract,
     readyToInteract,
+    setMuted,
+    muted,
   } = props;
 
   return (
@@ -90,14 +106,18 @@ const Title = (props: Props) => {
         }}
       >
         {!placesIsActive && (
-          <Trigger
-            className="type-h1 outline-text"
-            onMouseOver={() => setPeopleIsActive(true)}
-            onMouseOut={() => setPeopleIsActive(false)}
-            $readyToInteract={readyToInteract}
-          >
-            People<Comma>,</Comma>{" "}
-          </Trigger>
+          <Inner>
+            <Trigger
+              className="type-h1 outline-text"
+              onMouseOver={() => setPeopleIsActive(true)}
+              onMouseOut={() => setPeopleIsActive(false)}
+              $readyToInteract={readyToInteract}
+              onClick={() => setMuted(!muted)}
+            >
+              People<Comma>,</Comma>{" "}
+            </Trigger>
+            <MuteHint>Click to {muted ? "mute" : "unmute"}</MuteHint>
+          </Inner>
         )}
       </DesktopTriggerWrapper>
       <DesktopTriggerWrapper
@@ -106,14 +126,18 @@ const Title = (props: Props) => {
         animate="visible"
       >
         {!peopleIsActive && (
-          <Trigger
-            className="type-h1 outline-text"
-            onMouseOver={() => setPlacesIsActive(true)}
-            onMouseOut={() => setPlacesIsActive(false)}
-            $readyToInteract={readyToInteract}
-          >
-            Places
-          </Trigger>
+          <Inner>
+            <Trigger
+              className="type-h1 outline-text"
+              onMouseOver={() => setPlacesIsActive(true)}
+              onMouseOut={() => setPlacesIsActive(false)}
+              $readyToInteract={readyToInteract}
+              onClick={() => setMuted(!muted)}
+            >
+              Places
+            </Trigger>
+            <MuteHint>Click to {muted ? "mute" : "unmute"}</MuteHint>
+          </Inner>
         )}
       </DesktopTriggerWrapper>
     </TitleWrapper>
