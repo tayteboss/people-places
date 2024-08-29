@@ -40,16 +40,19 @@ const MobileTriggerWrapper = styled.div<{
   flex-direction: column;
   justify-content: flex-start;
 
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+
   &:not(:first-child) {
     border-top: 1px solid var(--colour-black);
   }
 `;
 
-const Trigger = styled.button<{ $readyToInteract: boolean; $hide: boolean }>`
+const Trigger = styled.button<{ $readyToInteract: boolean; $hide?: boolean }>`
   white-space: pre;
   text-align: center;
   pointer-events: ${(props) => (props.$readyToInteract ? "all" : "none")};
   opacity: ${(props) => props.$hide && "0"};
+  z-index: 10;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     position: absolute;
@@ -71,6 +74,8 @@ const MediaInnerWrapper = styled.div<{ $isActive: boolean }>`
   height: 100%;
   width: 100%;
   opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 
   mux-player {
     width: 100%;
@@ -121,6 +126,8 @@ type Props = {
   peopleCaptions: CaptionType[];
   placesCaptions: CaptionType[];
   readyToInteract: boolean;
+  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  muted: boolean;
 };
 
 const MobileLayout = (props: Props) => {
@@ -149,6 +156,8 @@ const MobileLayout = (props: Props) => {
     placesLocationAddress,
     acknowledgementOfCountry,
     readyToInteract,
+    setMuted,
+    muted,
   } = props;
 
   return (
@@ -159,13 +168,14 @@ const MobileLayout = (props: Props) => {
           setPeopleIsActive(!peopleIsActive);
           setPlacesIsActive(false);
           setInformationIsActive(false);
+          setMuted(false);
         }}
         $isActive={peopleIsActive}
       >
         <Trigger
           className="type-h1 outline-text"
           $readyToInteract={readyToInteract}
-          $hide={peopleIsActive}
+          $hide={false}
         >
           People
         </Trigger>
@@ -174,6 +184,7 @@ const MobileLayout = (props: Props) => {
             playbackId={peopleMedia?.asset?.playbackId}
             isActive={peopleIsActive}
             setVideoTimeStamp={setPeopleVideoTimeStamp}
+            muted={muted}
           />
         </MediaInnerWrapper>
         {peopleIsActive && (
@@ -194,13 +205,14 @@ const MobileLayout = (props: Props) => {
           setPlacesIsActive(!placesIsActive);
           setPeopleIsActive(false);
           setInformationIsActive(false);
+          setMuted(false);
         }}
         $isActive={placesIsActive}
       >
         <Trigger
           className="type-h1 outline-text"
           $readyToInteract={readyToInteract}
-          $hide={placesIsActive}
+          $hide={false}
         >
           Places
         </Trigger>

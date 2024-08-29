@@ -80,6 +80,8 @@ const Page = (props: Props) => {
         placesLocationAddress={data?.placesSection?.placesLocationAddress}
         acknowledgementOfCountry={siteSettings?.acknowledgementOfCountry}
         readyToInteract={readyToInteract}
+        setMuted={setMuted}
+        muted={muted}
       />
       <Title
         setPlacesIsActive={setPlacesIsActive}
