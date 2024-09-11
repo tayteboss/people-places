@@ -1,4 +1,4 @@
-import {HomeIcon} from '@sanity/icons'
+import {HomeIcon, TextIcon} from '@sanity/icons'
 
 export default {
   title: 'Home Page',
@@ -25,14 +25,20 @@ export default {
       description: 'This is the SEO description that appears in search engines.',
     },
     {
+      title: 'Hero Media',
+      name: 'heroMedia',
+      type: 'mux.video',
+    },
+    {
       title: 'People Section',
       name: 'peopleSection',
       type: 'object',
       fields: [
         {
-          title: 'Media',
-          name: 'peopleMedia',
-          type: 'mux.video',
+          title: 'Audio',
+          name: 'peopleAudio',
+          type: 'file',
+          accepts: 'audio/*',
         },
         {
           title: 'Captions',
@@ -40,8 +46,27 @@ export default {
           type: 'array',
           of: [
             {
-              type: 'reference',
-              to: [{type: 'caption'}],
+              type: 'object',
+              icon: TextIcon,
+              fields: [
+                {
+                  title: 'Caption',
+                  name: 'caption',
+                  type: 'string',
+                },
+                {
+                  title: 'Start',
+                  name: 'start',
+                  type: 'number',
+                  description: 'e.g. 1.5',
+                },
+                {
+                  title: 'End',
+                  name: 'end',
+                  type: 'number',
+                  description: 'e.g. 5',
+                },
+              ],
             },
           ],
         },
@@ -56,19 +81,6 @@ export default {
           type: 'text',
         },
       ],
-      preview: {
-        select: {
-          media: 'peopleMedia',
-          tagline: 'peopleTagline',
-        },
-        prepare(selection) {
-          const {media, tagline} = selection
-          return {
-            title: tagline,
-            media: media,
-          }
-        },
-      },
     },
     {
       title: 'Places Section',
@@ -76,9 +88,10 @@ export default {
       type: 'object',
       fields: [
         {
-          title: 'Media',
-          name: 'placesMedia',
-          type: 'mux.video',
+          title: 'Audio',
+          name: 'placesAudio',
+          type: 'file',
+          accepts: 'audio/*',
         },
         {
           title: 'Captions',
@@ -86,8 +99,27 @@ export default {
           type: 'array',
           of: [
             {
-              type: 'reference',
-              to: [{type: 'caption'}],
+              type: 'object',
+              icon: TextIcon,
+              fields: [
+                {
+                  title: 'Caption',
+                  name: 'caption',
+                  type: 'string',
+                },
+                {
+                  title: 'Start',
+                  name: 'start',
+                  type: 'number',
+                  description: 'e.g. 1.5',
+                },
+                {
+                  title: 'End',
+                  name: 'end',
+                  type: 'number',
+                  description: 'e.g. 5',
+                },
+              ],
             },
           ],
         },
@@ -102,19 +134,6 @@ export default {
           type: 'text',
         },
       ],
-      preview: {
-        select: {
-          media: 'placesMedia',
-          tagline: 'placesTagline',
-        },
-        prepare(selection) {
-          const {media, tagline} = selection
-          return {
-            title: tagline,
-            media: media,
-          }
-        },
-      },
     },
   ],
 }

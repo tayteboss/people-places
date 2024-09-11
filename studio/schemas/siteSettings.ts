@@ -1,3 +1,5 @@
+import {UserIcon, EarthAmericasIcon} from '@sanity/icons'
+
 export default {
   title: 'Site Settings',
   name: 'siteSettings',
@@ -32,8 +34,7 @@ export default {
       type: 'array',
       of: [
         {
-          type: 'reference',
-          to: [{type: 'listItem'}],
+          type: 'string',
         },
       ],
     },
@@ -43,41 +44,95 @@ export default {
       type: 'array',
       of: [
         {
-          type: 'reference',
-          to: [{type: 'listItem'}],
+          type: 'object',
+          icon: UserIcon,
+          fields: [
+            {
+              title: 'Name',
+              name: 'name',
+              type: 'string',
+            },
+            {
+              title: 'Link',
+              name: 'link',
+              type: 'url',
+              description: 'Optional',
+            },
+          ],
         },
       ],
     },
     {
-      title: 'Phone',
-      name: 'phone',
-      type: 'string',
+      title: 'Contacts',
+      name: 'contacts',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          icon: UserIcon,
+          fields: [
+            {
+              title: 'Name',
+              name: 'name',
+              type: 'string',
+            },
+            {
+              title: 'Role',
+              name: 'role',
+              type: 'string',
+            },
+            {
+              title: 'Email',
+              name: 'email',
+              type: 'string',
+            },
+            {
+              title: 'Phone',
+              name: 'phone',
+              type: 'string',
+            },
+            {
+              title: 'Location',
+              name: 'location',
+              type: 'string',
+            },
+            {
+              title: 'Timezone',
+              name: 'timezone',
+              type: 'string',
+              description: 'e.g Australia/Melbourne',
+            },
+          ],
+        },
+      ],
     },
     {
-      title: 'Email',
-      name: 'email',
-      type: 'string',
-    },
-    {
-      title: 'Instagram Handle',
-      name: 'instagramHandle',
-      type: 'string',
-      description: 'Without the @ symbol.',
-    },
-    {
-      title: 'Instagram Link',
-      name: 'instagramLink',
-      type: 'url',
-    },
-    {
-      title: 'Address',
-      name: 'address',
-      type: 'text',
-    },
-    {
-      title: 'Google Maps Link',
-      name: 'googleMapsLink',
-      type: 'url',
+      title: 'Socials',
+      name: 'socials',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          icon: EarthAmericasIcon,
+          fields: [
+            {
+              title: 'Platform',
+              name: 'name',
+              type: 'string',
+            },
+            {
+              title: 'Tag',
+              name: 'tag',
+              type: 'string',
+            },
+            {
+              title: 'Link',
+              name: 'link',
+              type: 'url',
+            },
+          ],
+        },
+      ],
     },
     {
       title: 'Acknowledgement of Country',
