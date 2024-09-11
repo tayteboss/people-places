@@ -2,6 +2,10 @@ export type MediaType = {
   asset: { playbackId: string };
 };
 
+export type AudioType = {
+  asset: { url: string };
+};
+
 export type TransitionsType = {
   hidden: {
     opacity: number;
@@ -36,17 +40,40 @@ export type ListItemType = {
   link?: string;
 };
 
+export type SocialListType = {
+  name: string;
+  tag: string;
+  link?: string;
+};
+
+export type ClientItemType = {
+  name: string;
+  link?: string;
+};
+
+export type ContactType = {
+  email: string;
+  location: string;
+  name: string;
+  phone: string;
+  role: string;
+  timezone: string;
+};
+
 export type SiteSettingsType = {
   introduction: string;
   team: ListItemType[];
-  services: ListItemType[];
-  clients: ListItemType[];
+  services: string[];
+  socials: SocialListType[];
+  clients: ClientItemType[];
+  contacts: ContactType[];
   acknowledgementOfCountry: string;
 };
 
 export type HomePageType = {
   seoTitle: string;
   seoDescription: string;
+  heroMedia: MediaType;
   peopleSection: PeopleType;
   placesSection: PlacesType;
 };
@@ -63,17 +90,15 @@ export type CaptionType = {
 };
 
 export type PlacesType = {
-  placesMedia: MediaType;
+  placesAudio: AudioType;
   placesCaptions: CaptionType[];
-  placesTagline?: string;
   placesLocationTitle: string;
   placesLocationAddress: string;
 };
 
 export type PeopleType = {
-  peopleMedia: MediaType;
+  peopleAudio: AudioType;
   peopleCaptions: CaptionType[];
-  peopleTagline?: string;
   peopleLocationTitle: string;
   peopleLocationAddress: string;
 };

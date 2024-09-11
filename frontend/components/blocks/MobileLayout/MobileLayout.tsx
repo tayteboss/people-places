@@ -6,10 +6,9 @@ import {
   PlacesType,
   SiteSettingsType,
 } from "../../../shared/types/types";
-import { VideoSlot } from "../Media/Media";
 import pxToRem from "../../../utils/pxToRem";
 import SubTitles from "../SubTitles";
-import { LocationSection, Section } from "../Credits/Credits";
+import { LocationSection, Section } from "../Information/Information";
 import { motion } from "framer-motion";
 
 const MobileLayoutWrapper = styled.div`

@@ -22,18 +22,6 @@ const SubTitlesWrapper = styled(motion.div)`
 
 const Captions = styled.h2``;
 
-const TimestampHelperWrapper = styled.div`
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-`;
-
-const TimestampHelper = styled.p`
-  color: red;
-`;
-
 const wrapperVariants = {
   hidden: {
     opacity: 0,
@@ -53,15 +41,9 @@ const wrapperVariants = {
   },
 };
 
-type Subtitle = {
-  start: number;
-  end: number;
-  content: string;
-};
-
 type Props = {
-  peopleVideoTimeStamp: number;
-  placesVideoTimeStamp: number;
+  peopleAudioTimeStamp: number;
+  placesAudioTimeStamp: number;
   peopleIsActive: boolean;
   placesIsActive: boolean;
   peopleCaptions: CaptionType[];
@@ -70,8 +52,8 @@ type Props = {
 
 const SubTitles = (props: Props) => {
   const {
-    peopleVideoTimeStamp,
-    placesVideoTimeStamp,
+    peopleAudioTimeStamp,
+    placesAudioTimeStamp,
     peopleIsActive,
     placesIsActive,
     peopleCaptions,
@@ -92,11 +74,11 @@ const SubTitles = (props: Props) => {
   // Get the current subtitles for both people and places videos
   const peopleSubtitle = getCurrentSubtitle(
     peopleCaptions,
-    peopleVideoTimeStamp
+    peopleAudioTimeStamp
   );
   const placesSubtitle = getCurrentSubtitle(
     placesCaptions,
-    placesVideoTimeStamp
+    placesAudioTimeStamp
   );
 
   return (
@@ -105,14 +87,6 @@ const SubTitles = (props: Props) => {
       initial="hidden"
       animate={peopleIsActive || placesIsActive ? "visible" : "hidden"}
     >
-      {/* <TimestampHelperWrapper>
-        <TimestampHelper>
-          People Media Timestamp: {peopleVideoTimeStamp}
-        </TimestampHelper>
-        <TimestampHelper>
-          Places Media Timestamp: {placesVideoTimeStamp}
-        </TimestampHelper>
-      </TimestampHelperWrapper> */}
       {peopleIsActive && (
         <Captions className="outline-text">{peopleSubtitle}</Captions>
       )}

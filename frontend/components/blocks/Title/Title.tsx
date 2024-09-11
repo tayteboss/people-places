@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import pxToRem from "../../../utils/pxToRem";
+import { useState } from "react";
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled.div<{ $isActive: boolean }>`
   height: 100%;
   width: 100%;
   display: flex;
@@ -11,6 +12,9 @@ const TitleWrapper = styled.div`
   position: fixed;
   z-index: 20;
   pointer-events: none;
+  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     flex-direction: column;
@@ -27,16 +31,16 @@ const DesktopTriggerWrapper = styled(motion.div)`
   }
 `;
 
-const Trigger = styled.button<{ $readyToInteract: boolean }>`
+const Trigger = styled.button<{
+  $readyToInteract: boolean;
+  $isInActive: boolean;
+}>`
   white-space: pre;
   text-align: center;
   pointer-events: ${(props) => (props.$readyToInteract ? "all" : "none")};
-`;
-
-const Comma = styled.span`
-  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    display: none;
-  }
+  padding: 0 ${pxToRem(64)};
+  color: ${(props) =>
+    props.$isInActive ? "transparent" : "var(--colour-yellow)"};
 `;
 
 const Inner = styled.div`
@@ -47,25 +51,20 @@ const Inner = styled.div`
   gap: ${pxToRem(16)};
 `;
 
-const MuteHint = styled.p`
-  text-align: center;
-  color: var(--colour-yellow);
-`;
-
 const wrapperVariants = {
   hidden: {
     width: "auto",
     transition: {
-      duration: 0.5,
+      duration: 1,
       ease: "easeInOut",
     },
   },
   visible: {
     width: "50vw",
     transition: {
-      duration: 0.5,
+      duration: 1,
       ease: "easeInOut",
-      delay: 1,
+      delay: 1.5,
     },
   },
 };
@@ -77,6 +76,7 @@ type Props = {
   setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
   readyToInteract: boolean;
+  isActive: boolean;
 };
 
 const Title = (props: Props) => {
@@ -87,50 +87,59 @@ const Title = (props: Props) => {
     setPlacesIsActive,
     setReadyToInteract,
     readyToInteract,
+    isActive,
   } = props;
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <TitleWrapper>
+    <TitleWrapper $isActive={isActive}>
       <DesktopTriggerWrapper
         variants={wrapperVariants}
         initial="hidden"
         animate="visible"
         onAnimationComplete={() => setReadyToInteract(true)}
-        onClick={() => {
-          setPeopleIsActive(true);
-          setPlacesIsActive(false);
-        }}
       >
-        {!placesIsActive && (
-          <Inner>
-            <Trigger
-              className="type-h1 outline-text"
-              onMouseOver={() => setPeopleIsActive(true)}
-              onMouseOut={() => setPeopleIsActive(false)}
-              $readyToInteract={readyToInteract}
-            >
-              People<Comma>,</Comma>{" "}
-            </Trigger>
-          </Inner>
-        )}
+        <Inner>
+          <Trigger
+            className="type-h1 outline-text"
+            onMouseOver={() => {
+              setPeopleIsActive(true);
+              setIsHovered(true);
+            }}
+            onMouseOut={() => {
+              setPeopleIsActive(false);
+              setIsHovered(false);
+            }}
+            $readyToInteract={readyToInteract}
+            $isInActive={!peopleIsActive && isHovered}
+          >
+            People
+          </Trigger>
+        </Inner>
       </DesktopTriggerWrapper>
       <DesktopTriggerWrapper
         variants={wrapperVariants}
         initial="hidden"
         animate="visible"
       >
-        {!peopleIsActive && (
-          <Inner>
-            <Trigger
-              className="type-h1 outline-text"
-              onMouseOver={() => setPlacesIsActive(true)}
-              onMouseOut={() => setPlacesIsActive(false)}
-              $readyToInteract={readyToInteract}
-            >
-              Places
-            </Trigger>
-          </Inner>
-        )}
+        <Inner>
+          <Trigger
+            className="type-h1 outline-text"
+            onMouseOver={() => {
+              setPlacesIsActive(true);
+              setIsHovered(true);
+            }}
+            onMouseOut={() => {
+              setPlacesIsActive(false);
+              setIsHovered(false);
+            }}
+            $readyToInteract={readyToInteract}
+            $isInActive={!placesIsActive && isHovered}
+          >
+            Places
+          </Trigger>
+        </Inner>
       </DesktopTriggerWrapper>
     </TitleWrapper>
   );

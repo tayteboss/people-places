@@ -4,17 +4,15 @@ import {
   ListItemType,
   SiteSettingsType,
 } from "../../../shared/types/types";
-import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 import pxToRem from "../../../utils/pxToRem";
 import formatHTML from "../../../utils/formatHTML";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-const CreditsWrapper = styled.div<{ $isInactive: boolean }>`
+const InformationWrapper = styled(motion.section)`
   position: relative;
   z-index: 10;
-  padding-top: calc(100vh + 80px);
-  padding-bottom: calc(100vh + 80px);
-  opacity: ${(props) => (props.$isInactive ? 0 : 1)};
+  padding-top: 20vh;
+  padding-bottom: 20vh;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     display: none;
@@ -27,8 +25,25 @@ const Inner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${pxToRem(48)};
+  gap: ${pxToRem(24)};
 `;
+
+const wrapperVariants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
 
 type Props = {
   introduction: SiteSettingsType["introduction"];
@@ -40,12 +55,12 @@ type Props = {
   placesLocationTitle: HomePageType["placesSection"]["placesLocationTitle"];
   placesLocationAddress: HomePageType["placesSection"]["placesLocationAddress"];
   acknowledgementOfCountry: SiteSettingsType["acknowledgementOfCountry"];
-  isInactive: boolean;
-  destroyScroll: boolean;
+  isActive: boolean;
 };
 
-const Credits = (props: Props) => {
+const Information = (props: Props) => {
   const {
+    isActive,
     introduction,
     team,
     services,
@@ -55,50 +70,19 @@ const Credits = (props: Props) => {
     placesLocationTitle,
     placesLocationAddress,
     acknowledgementOfCountry,
-    isInactive,
-    destroyScroll,
   } = props;
 
-  const [isReady, setIsReady] = useState(false);
-
-  const lenis = useLenis();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (lenis) {
-      lenis.options.infinite = true;
-      lenis.options.syncTouch = true;
-      lenis.scrollTo(0, 0, 0);
-      timer = setTimeout(() => {
-        lenis.stop();
-      }, 1000);
-      timer = setTimeout(() => {
-        lenis.start();
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [lenis]);
-
-  useEffect(() => {
-    if (destroyScroll && lenis) {
-      lenis.destroy();
-    }
-  }, [destroyScroll, lenis]);
-
   return (
-    <>
-      <CreditsWrapper $isInactive={isInactive || !isReady}>
-        <ReactLenis root>
+    <AnimatePresence>
+      {isActive && (
+        <InformationWrapper
+          variants={wrapperVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
           <Inner>
-            <Section title="People, Places" content={introduction} useDark />
+            <Section title="People, Places" content={introduction} />
             <Section title="Team" list={team} />
             <LocationSection
               title1={peopleLocationTitle}
@@ -106,17 +90,18 @@ const Credits = (props: Props) => {
               address1={peopleLocationAddress}
               address2={placesLocationAddress}
             />
-            <Section title="Services" list={services} />
-            <Section title="Clients" list={clients} />
-            <Section
-              title="Acknowledgement of Country"
-              content={acknowledgementOfCountry}
-              useDark
-            />
+            <Section title="Services" list={services} useColumn />
+            <Section title="Clients" list={clients} useCenter />
+            {acknowledgementOfCountry && (
+              <Section
+                title="Acknowledgement of Country"
+                content={acknowledgementOfCountry}
+              />
+            )}
           </Inner>
-        </ReactLenis>
-      </CreditsWrapper>
-    </>
+        </InformationWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -125,7 +110,7 @@ const SectionWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${pxToRem(48)};
+  gap: ${pxToRem(24)};
   width: 30vw;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
@@ -134,13 +119,31 @@ const SectionWrapper = styled.div`
 `;
 
 const SectionTitle = styled.h4`
-  color: var(--colour-black);
+  color: var(--colour-yellow);
   text-transform: uppercase;
+  position: relative;
+
+  &.type-p {
+    font-family: var(--font-default);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--colour-yellow);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
 `;
 
-const SectionContent = styled.p<{ $useDark: boolean }>`
-  opacity: ${(props) => !props.$useDark && "0.25"};
+const SectionContent = styled.p`
   text-align: center;
+  color: var(--colour-yellow);
+  font-family: var(--font-default);
 `;
 
 const ListWrapper = styled.div`
@@ -151,53 +154,87 @@ const ListInner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: ${pxToRem(10)};
+  gap: ${pxToRem(12)};
 `;
 
 const ListTitle = styled.p`
-  opacity: 0.25;
   flex: 1;
   text-align: right;
   white-space: nowrap;
+  color: var(--colour-yellow);
+  font-family: var(--font-default);
 `;
 
-const ListLink = styled.a`
+const ListLink = styled.a<{ $useCenter: boolean }>`
   text-decoration: none;
   flex: 1;
   white-space: nowrap;
+  color: var(--colour-yellow);
+  font-family: var(--font-default);
+  text-align: ${(props) => props.$useCenter && "center"};
 
   &:hover {
     text-decoration: underline;
   }
 `;
 
-const ListName = styled.p`
+const ListName = styled.p<{ $useCenter: boolean }>`
   flex: 1;
   white-space: nowrap;
+  color: var(--colour-yellow);
+  font-family: var(--font-default);
+  text-align: ${(props) => props.$useCenter && "center"};
+`;
+
+const ColumnWrapper = styled.div`
+  columns: 3;
+  column-gap: ${pxToRem(12)};
+`;
+
+const Column = styled.div`
+  min-width: ${pxToRem(150)};
 `;
 
 export const Section = (props: {
   title: string;
   content?: string;
   list?: ListItemType[];
-  useDark?: boolean;
+  useCenter?: boolean;
+  useColumn?: boolean;
 }) => {
-  const { title, content, list, useDark } = props;
+  const { title, content, list, useCenter, useColumn } = props;
   return (
     <SectionWrapper>
       <SectionTitle className="type-p">{title}</SectionTitle>
-      {content && <SectionContent $useDark={useDark}>{content}</SectionContent>}
-      {list && list.length > 0 && (
+      {content && <SectionContent>{content}</SectionContent>}
+      {useColumn && list && list.length > 0 && (
+        <ColumnWrapper>
+          {list.map((item, i) => (
+            <Column key={i}>
+              <ListName $useCenter={true}>{item || ""}</ListName>
+            </Column>
+          ))}
+        </ColumnWrapper>
+      )}
+      {!useColumn && list && list.length > 0 && (
         <ListWrapper>
           {list.map((item: ListItemType, i: number) => (
             <ListInner key={i}>
               {item?.title && <ListTitle>{item?.title}</ListTitle>}
               {item?.link && (
-                <ListLink href={item?.link || ""} target="_blank">
+                <ListLink
+                  $useCenter={useCenter || false}
+                  href={item?.link || ""}
+                  target="_blank"
+                >
                   {item?.name || ""}
                 </ListLink>
               )}
-              {item?.name && !item?.link && <ListName>{item?.name}</ListName>}
+              {item?.name && !item?.link && (
+                <ListName $useCenter={useCenter || false}>
+                  {item?.name}
+                </ListName>
+              )}
             </ListInner>
           ))}
         </ListWrapper>
@@ -224,10 +261,16 @@ const LocationInner = styled.div`
 const LocationTitle = styled.h4`
   margin-bottom: ${pxToRem(10)};
   text-transform: uppercase;
+  font-family: var(--font-default);
+  color: var(--colour-yellow);
+  text-decoration: underline;
 `;
 
 const LocationContent = styled.div`
-  opacity: 0.25;
+  * {
+    font-family: var(--font-default);
+    color: var(--colour-yellow);
+  }
 `;
 
 export const LocationSection = (props: {
@@ -259,4 +302,4 @@ export const LocationSection = (props: {
   );
 };
 
-export default Credits;
+export default Information;

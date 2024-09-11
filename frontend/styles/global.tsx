@@ -121,14 +121,9 @@ export const GlobalStyles = createGlobalStyle`
 	button,
 	div {
 		font-family: var(--font-regular);
-		font-size: ${pxToRem(14)};
+		font-size: ${pxToRem(12)};
 		line-height: normal;
 		font-weight: 200;
-		color: var(--colour-black);
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(12)};
-		}
 	}
 
 	.outline-text {

@@ -34,15 +34,9 @@ export const mediaString = `
 export const siteSettingsQueryString = `
 	*[_type == 'siteSettings'][0] {
 		...,
-		clients[]-> {
-			...,
-		},
 		team[]-> {
 			...,
 		},
-		services[]-> {
-			...,
-		}
 	}
 `;
 
@@ -50,27 +44,27 @@ export const homePageQueryString = `
 	*[_type == 'homePage'][0] {
 		seoTitle,
 		seoDescription,
+		heroMedia {
+			asset-> {
+				playbackId
+			}
+		},
 		peopleSection {
-		...,
-			peopleMedia {
+			...,
+			peopleAudio {
 				asset-> {
-					playbackId,
+					url
 				},
-			},
-			peopleCaptions[] -> {
-				...
 			},
 			peopleLocationTitle,
 			peopleLocationAddress,
 		},
 		placesSection {
-			placesMedia {
+			...,
+			placesAudio {
 				asset-> {
-					playbackId,
+					url
 				},
-			},
-			placesCaptions[] -> {
-				...
 			},
 			placesLocationTitle,
 			placesLocationAddress,

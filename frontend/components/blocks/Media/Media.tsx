@@ -1,7 +1,12 @@
 import styled from "styled-components";
-import { PeopleType, PlacesType } from "../../../shared/types/types";
+import { useEffect, useRef } from "react";
+import {
+  HomePageType,
+  PeopleType,
+  PlacesType,
+} from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const MediaWrapper = styled.div`
   position: fixed;
@@ -22,13 +27,14 @@ const MediaWrapper = styled.div`
   }
 `;
 
-const InnerWrapper = styled.div<{ $isActive: boolean }>`
+const InnerWrapper = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  transition: opacity var(--transition-speed-slow) ease;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     position: relative;
@@ -38,94 +44,129 @@ const InnerWrapper = styled.div<{ $isActive: boolean }>`
 `;
 
 type Props = {
-  peopleMedia: PeopleType["peopleMedia"];
-  placesMedia: PlacesType["placesMedia"];
+  peopleAudio: PeopleType["peopleAudio"];
+  placesAudio: PlacesType["placesAudio"];
+  heroMedia: HomePageType["heroMedia"];
   peopleIsActive: boolean;
   placesIsActive: boolean;
-  setPeopleVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
-  setPlacesVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
+  readyToInteract: boolean;
+  soundIsActive: boolean;
+  setPeopleAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
+  setPlacesAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const Media = (props: Props) => {
+const Media = (props: Props) => {
   const {
-    peopleMedia,
-    placesMedia,
+    peopleAudio,
+    placesAudio,
+    heroMedia,
     peopleIsActive,
     placesIsActive,
-    setPeopleVideoTimeStamp,
-    setPlacesVideoTimeStamp,
+    readyToInteract,
+    setPeopleAudioTimeStamp,
+    setPlacesAudioTimeStamp,
+    soundIsActive,
   } = props;
+
+  const peopleAudioRef = useRef<HTMLAudioElement | null>(null);
+  const placesAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const peopleAudioIntervalRef = useRef<number | null>(null);
+  const placesAudioIntervalRef = useRef<number | null>(null);
+
+  // Handle People Audio Play/Pause and Time Stamp
+  useEffect(() => {
+    const audioElement = peopleAudioRef.current;
+
+    if (!audioElement) return;
+
+    if (peopleIsActive) {
+      audioElement.play();
+      peopleAudioIntervalRef.current = window.setInterval(() => {
+        setPeopleAudioTimeStamp(audioElement.currentTime);
+      }, 100);
+    } else {
+      audioElement.pause();
+      if (peopleAudioIntervalRef.current !== null) {
+        clearInterval(peopleAudioIntervalRef.current);
+      }
+    }
+
+    return () => {
+      if (peopleAudioIntervalRef.current !== null) {
+        clearInterval(peopleAudioIntervalRef.current);
+      }
+    };
+  }, [peopleIsActive, setPeopleAudioTimeStamp]);
+
+  // Handle Places Audio Play/Pause and Time Stamp
+  useEffect(() => {
+    const audioElement = placesAudioRef.current;
+
+    if (!audioElement) return;
+
+    if (placesIsActive) {
+      audioElement.play();
+      placesAudioIntervalRef.current = window.setInterval(() => {
+        setPlacesAudioTimeStamp(audioElement.currentTime);
+      }, 100);
+    } else {
+      audioElement.pause();
+      if (placesAudioIntervalRef.current !== null) {
+        clearInterval(placesAudioIntervalRef.current);
+      }
+    }
+
+    return () => {
+      if (placesAudioIntervalRef.current !== null) {
+        clearInterval(placesAudioIntervalRef.current);
+      }
+    };
+  }, [placesIsActive, setPlacesAudioTimeStamp]);
 
   return (
     <MediaWrapper>
-      <InnerWrapper $isActive={peopleIsActive}>
-        <VideoSlot
-          playbackId={peopleMedia?.asset?.playbackId}
-          isActive={peopleIsActive}
-          setVideoTimeStamp={setPeopleVideoTimeStamp}
+      <InnerWrapper
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: 1,
+          transition: {
+            duration: 1,
+            ease: "easeInOut",
+            delay: 1.5,
+          },
+        }}
+      >
+        {heroMedia?.asset?.playbackId && (
+          <MuxPlayer
+            streamType="on-demand"
+            playbackId={heroMedia?.asset?.playbackId}
+            autoPlay="muted"
+            loop={true}
+            thumbnailTime={1}
+            preload="auto"
+            paused={!readyToInteract}
+            muted={true}
+            playsInline={true}
+          />
+        )}
+        <audio
+          ref={peopleAudioRef}
+          src={peopleAudio?.asset?.url}
+          preload="auto"
+          loop
+          muted={!soundIsActive}
         />
-      </InnerWrapper>
-      <InnerWrapper $isActive={placesIsActive}>
-        <VideoSlot
-          playbackId={placesMedia?.asset?.playbackId}
-          isActive={placesIsActive}
-          setVideoTimeStamp={setPlacesVideoTimeStamp}
+        <audio
+          ref={placesAudioRef}
+          src={placesAudio?.asset?.url}
+          preload="auto"
+          loop
+          muted={!soundIsActive}
         />
       </InnerWrapper>
     </MediaWrapper>
   );
 };
 
-type SlotProps = {
-  playbackId: string;
-  isActive: boolean;
-  setVideoTimeStamp: React.Dispatch<React.SetStateAction<number>>;
-};
-
-export const VideoSlot = ({
-  playbackId,
-  isActive,
-  setVideoTimeStamp,
-}: SlotProps) => {
-  const playerRef = useRef<any>(null);
-  const [hasHovered, setHasHovered] = useState<boolean>(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (playerRef.current && isActive) {
-        setVideoTimeStamp(playerRef.current.currentTime);
-      }
-    }, 250);
-
-    return () => clearInterval(interval);
-  }, [playerRef, isActive, setVideoTimeStamp]);
-
-  useEffect(() => {
-    if (isActive && !hasHovered) {
-      // First hover, reset video to start
-      if (playerRef.current) {
-        playerRef.current.currentTime = 0;
-      }
-      setHasHovered(true);
-    }
-  }, [isActive, hasHovered]);
-
-  return (
-    <>
-      {playbackId && (
-        <MuxPlayer
-          ref={playerRef}
-          streamType="on-demand"
-          playbackId={playbackId}
-          autoPlay="muted"
-          loop={true}
-          paused={!isActive}
-          thumbnailTime={1}
-          preload="auto"
-          muted={true}
-          playsInline={true}
-        />
-      )}
-    </>
-  );
-};
+export default Media;
