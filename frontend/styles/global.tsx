@@ -121,7 +121,7 @@ export const GlobalStyles = createGlobalStyle`
 	button,
 	div {
 		font-family: var(--font-regular);
-		font-size: ${pxToRem(12)};
+		font-size: ${pxToRem(13)};
 		line-height: normal;
 		font-weight: 200;
 	}

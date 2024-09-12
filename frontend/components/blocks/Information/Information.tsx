@@ -211,7 +211,9 @@ export const Section = (props: {
         <ColumnWrapper>
           {list.map((item, i) => (
             <Column key={i}>
-              <ListName $useCenter={true}>{item || ""}</ListName>
+              <ListName $useCenter={true}>
+                <>{item || ""}</>
+              </ListName>
             </Column>
           ))}
         </ColumnWrapper>

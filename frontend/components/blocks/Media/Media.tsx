@@ -15,6 +15,7 @@ const MediaWrapper = styled.div`
   height: 100%;
   width: 100%;
   z-index: 1;
+  background: var(--colour-yellow);
 
   mux-player {
     width: 100%;
@@ -71,8 +72,41 @@ const Media = (props: Props) => {
   const peopleAudioRef = useRef<HTMLAudioElement | null>(null);
   const placesAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const peopleAudioIntervalRef = useRef<number | null>(null);
-  const placesAudioIntervalRef = useRef<number | null>(null);
+  const peopleTimestampRef = useRef<number>(0);
+  const placesTimestampRef = useRef<number>(0);
+
+  const peopleTimerRef = useRef<number | null>(null);
+  const placesTimerRef = useRef<number | null>(null);
+
+  // Function to start manual timestamp updates for People Audio
+  const startPeopleTimer = () => {
+    if (peopleTimerRef.current !== null) return;
+    peopleTimerRef.current = window.setInterval(() => {
+      peopleTimestampRef.current += 0.1; // Increment by 0.1 seconds
+      if (peopleAudioRef.current) {
+        const duration = peopleAudioRef.current.duration;
+        if (peopleTimestampRef.current >= duration) {
+          peopleTimestampRef.current = 0; // Loop back to start
+        }
+      }
+      setPeopleAudioTimeStamp(peopleTimestampRef.current);
+    }, 100);
+  };
+
+  // Function to start manual timestamp updates for Places Audio
+  const startPlacesTimer = () => {
+    if (placesTimerRef.current !== null) return;
+    placesTimerRef.current = window.setInterval(() => {
+      placesTimestampRef.current += 0.1; // Increment by 0.1 seconds
+      if (placesAudioRef.current) {
+        const duration = placesAudioRef.current.duration;
+        if (placesTimestampRef.current >= duration) {
+          placesTimestampRef.current = 0; // Loop back to start
+        }
+      }
+      setPlacesAudioTimeStamp(placesTimestampRef.current);
+    }, 100);
+  };
 
   // Handle People Audio Play/Pause and Time Stamp
   useEffect(() => {
@@ -81,23 +115,34 @@ const Media = (props: Props) => {
     if (!audioElement) return;
 
     if (peopleIsActive) {
-      audioElement.play();
-      peopleAudioIntervalRef.current = window.setInterval(() => {
-        setPeopleAudioTimeStamp(audioElement.currentTime);
-      }, 100);
+      if (soundIsActive) {
+        audioElement.currentTime = peopleTimestampRef.current;
+        audioElement.play();
+        if (peopleTimerRef.current !== null) {
+          clearInterval(peopleTimerRef.current);
+          peopleTimerRef.current = null;
+        }
+        window.setInterval(() => {
+          setPeopleAudioTimeStamp(audioElement.currentTime);
+        }, 100);
+      } else {
+        audioElement.pause();
+        startPeopleTimer();
+      }
     } else {
       audioElement.pause();
-      if (peopleAudioIntervalRef.current !== null) {
-        clearInterval(peopleAudioIntervalRef.current);
+      if (peopleTimerRef.current !== null) {
+        clearInterval(peopleTimerRef.current);
+        peopleTimerRef.current = null;
       }
     }
 
     return () => {
-      if (peopleAudioIntervalRef.current !== null) {
-        clearInterval(peopleAudioIntervalRef.current);
+      if (peopleTimerRef.current !== null) {
+        clearInterval(peopleTimerRef.current);
       }
     };
-  }, [peopleIsActive, setPeopleAudioTimeStamp]);
+  }, [peopleIsActive, soundIsActive, setPeopleAudioTimeStamp]);
 
   // Handle Places Audio Play/Pause and Time Stamp
   useEffect(() => {
@@ -106,23 +151,34 @@ const Media = (props: Props) => {
     if (!audioElement) return;
 
     if (placesIsActive) {
-      audioElement.play();
-      placesAudioIntervalRef.current = window.setInterval(() => {
-        setPlacesAudioTimeStamp(audioElement.currentTime);
-      }, 100);
+      if (soundIsActive) {
+        audioElement.currentTime = placesTimestampRef.current;
+        audioElement.play();
+        if (placesTimerRef.current !== null) {
+          clearInterval(placesTimerRef.current);
+          placesTimerRef.current = null;
+        }
+        window.setInterval(() => {
+          setPlacesAudioTimeStamp(audioElement.currentTime);
+        }, 100);
+      } else {
+        audioElement.pause();
+        startPlacesTimer();
+      }
     } else {
       audioElement.pause();
-      if (placesAudioIntervalRef.current !== null) {
-        clearInterval(placesAudioIntervalRef.current);
+      if (placesTimerRef.current !== null) {
+        clearInterval(placesTimerRef.current);
+        placesTimerRef.current = null;
       }
     }
 
     return () => {
-      if (placesAudioIntervalRef.current !== null) {
-        clearInterval(placesAudioIntervalRef.current);
+      if (placesTimerRef.current !== null) {
+        clearInterval(placesTimerRef.current);
       }
     };
-  }, [placesIsActive, setPlacesAudioTimeStamp]);
+  }, [placesIsActive, soundIsActive, setPlacesAudioTimeStamp]);
 
   return (
     <MediaWrapper>

@@ -45,9 +45,6 @@ const Page = (props: Props) => {
   const viewport = useViewportWidth();
   const isMobile = viewport === "mobile" || viewport === "tabletPortrait";
 
-  console.log("data", data);
-  console.log("siteSettings", siteSettings);
-
   return (
     <PageWrapper
       variants={pageTransitionVariants}

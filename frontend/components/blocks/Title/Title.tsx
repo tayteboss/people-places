@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import pxToRem from "../../../utils/pxToRem";
-import { useState } from "react";
 
 const TitleWrapper = styled.div<{ $isActive: boolean }>`
   height: 100%;
@@ -32,15 +31,23 @@ const DesktopTriggerWrapper = styled(motion.div)`
 `;
 
 const Trigger = styled.button<{
-  $readyToInteract: boolean;
-  $isInActive: boolean;
+  $isActive: boolean;
+  $pointerEventsNone: boolean;
 }>`
+  pointer-events: ${(props) => (props.$pointerEventsNone ? "none" : "all")};
   white-space: pre;
   text-align: center;
-  pointer-events: ${(props) => (props.$readyToInteract ? "all" : "none")};
   padding: 0 ${pxToRem(64)};
-  color: ${(props) =>
-    props.$isInActive ? "transparent" : "var(--colour-yellow)"};
+  color: ${(props) => props.$isActive && "transparent"} !important;
+  -webkit-text-stroke-color: ${(props) =>
+    props.$isActive && "var(--colour-yellow)"} !important;
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+
+  &:hover {
+    color: var(--colour-yellow) !important;
+    -webkit-text-stroke-color: var(--colour-black) !important;
+  }
 `;
 
 const Inner = styled.div`
@@ -90,7 +97,8 @@ const Title = (props: Props) => {
     isActive,
   } = props;
 
-  const [isHovered, setIsHovered] = useState(false);
+  console.log("peopleIsActive", peopleIsActive);
+  console.log("placesIsActive", placesIsActive);
 
   return (
     <TitleWrapper $isActive={isActive}>
@@ -102,17 +110,15 @@ const Title = (props: Props) => {
       >
         <Inner>
           <Trigger
-            className="type-h1 outline-text"
-            onMouseOver={() => {
+            className={`${peopleIsActive || placesIsActive} type-h1 outline-text`}
+            onMouseEnter={() => {
               setPeopleIsActive(true);
-              setIsHovered(true);
             }}
             onMouseOut={() => {
               setPeopleIsActive(false);
-              setIsHovered(false);
             }}
-            $readyToInteract={readyToInteract}
-            $isInActive={!peopleIsActive && isHovered}
+            $isActive={peopleIsActive || placesIsActive}
+            $pointerEventsNone={!isActive}
           >
             People
           </Trigger>
@@ -125,17 +131,15 @@ const Title = (props: Props) => {
       >
         <Inner>
           <Trigger
-            className="type-h1 outline-text"
-            onMouseOver={() => {
+            className={`${peopleIsActive || placesIsActive} type-h1 outline-text`}
+            onMouseEnter={() => {
               setPlacesIsActive(true);
-              setIsHovered(true);
             }}
             onMouseOut={() => {
               setPlacesIsActive(false);
-              setIsHovered(false);
             }}
-            $readyToInteract={readyToInteract}
-            $isInActive={!placesIsActive && isHovered}
+            $isActive={peopleIsActive || placesIsActive}
+            $pointerEventsNone={!isActive}
           >
             Places
           </Trigger>

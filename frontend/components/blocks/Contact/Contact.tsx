@@ -170,8 +170,8 @@ const Section = (props: ContactType) => {
             T. {phone}
           </ItemLink>
         )}
-        {location && <Item className="type-p">{location}</Item>}
         <Item className="type-p">–</Item>
+        {location && <Item className="type-p">{location}</Item>}
         {timezone && <Time timezone={timezone} />}
       </SectionContent>
     </SectionWrapper>
@@ -181,13 +181,15 @@ const Section = (props: ContactType) => {
 const Time = (props: { timezone: string }) => {
   const { timezone } = props;
 
-  const [time, setTime] = useState("00:00:00");
+  const [time, setTime] = useState({ hour: "00", minute: "00", period: "AM" });
+  const [showColon, setShowColon] = useState(true);
   const [isOffline, setIsOffline] = useState(false);
 
-  const checkIfOffline = (time: string) => {
-    const checkIfBefore9amOrAfter6pm = (time: string) => {
-      const hours = Number(time.split(":")[0]);
-      return hours < 9 || hours > 18;
+  const checkIfOffline = (hours: number) => {
+    const checkIfBefore9amOrAfter530pm = (hours: number) => {
+      console.log("hours", hours);
+
+      return hours < 9 || hours > 17.5;
     };
 
     const checkIfWeekend = () => {
@@ -196,40 +198,63 @@ const Time = (props: { timezone: string }) => {
       return day === 0 || day === 6;
     };
 
-    const isOffline = checkIfBefore9amOrAfter6pm(time) || checkIfWeekend();
-    setIsOffline(isOffline);
+    const offline = checkIfBefore9amOrAfter530pm(hours) || checkIfWeekend();
+    setIsOffline(offline);
   };
 
   useEffect(() => {
-    let rightNow = new Date();
-    const localTime = rightNow.toLocaleString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: timezone,
-    });
-    setTime(localTime);
+    const updateTime = () => {
+      const rightNow = new Date();
+      const localTime12hr = rightNow.toLocaleString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: timezone,
+      });
 
-    const interval = setInterval(() => {
-      let rightNow = new Date();
-      const localTime = rightNow.toLocaleString("en-GB", {
+      const localTime24hr = rightNow.toLocaleString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
         timeZone: timezone,
       });
-      setTime(localTime);
-      checkIfOffline(time);
-    }, 10000);
 
-    return () => clearInterval(interval);
-  }, []);
+      const [timePart12hr, period] = localTime12hr.split(" ");
+      const [hour12hr, minute] = timePart12hr.split(":");
+
+      const [hour24hr] = localTime24hr.split(":");
+
+      setTime({ hour: hour12hr, minute, period });
+      checkIfOffline(Number(hour24hr));
+    };
+
+    updateTime();
+
+    // Flash the colon every second
+    const colonInterval = setInterval(() => {
+      setShowColon((prev) => !prev);
+    }, 1000);
+
+    // Update time every minute
+    const timeInterval = setInterval(() => {
+      updateTime();
+    }, 60000);
+
+    return () => {
+      clearInterval(colonInterval);
+      clearInterval(timeInterval);
+    };
+  }, [timezone]);
 
   return (
     <>
       {time && (
         <>
-          <Item className="type-p">{time}</Item>
+          <Item className="type-p">
+            {time.hour}
+            {showColon ? ":" : " "}
+            {time.minute} {time.period}
+          </Item>
           <Item className="type-p">
             (Currently {isOffline ? "Offline" : "Online"})
           </Item>
