@@ -22,10 +22,6 @@ const MediaWrapper = styled.div`
     height: 100%;
     object-fit: cover;
   }
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    position: absolute;
-  }
 `;
 
 const InnerWrapper = styled(motion.div)`
@@ -36,12 +32,6 @@ const InnerWrapper = styled(motion.div)`
   width: 100%;
 
   transition: opacity var(--transition-speed-slow) ease;
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    position: relative;
-    top: unset;
-    left: unset;
-  }
 `;
 
 type Props = {

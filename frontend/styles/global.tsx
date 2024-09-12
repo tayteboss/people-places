@@ -94,7 +94,7 @@ export const GlobalStyles = createGlobalStyle`
 		text-transform: uppercase;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(24)};
+			font-size: ${pxToRem(32)};
 		}
 	}
 
@@ -124,6 +124,10 @@ export const GlobalStyles = createGlobalStyle`
 		font-size: ${pxToRem(13)};
 		line-height: normal;
 		font-weight: 200;
+
+		@media ${theme.mediaBreakpoints.tabletPortrait} {
+			font-size: ${pxToRem(12)};
+		}
 	}
 
 	.outline-text {

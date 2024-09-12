@@ -24,10 +24,6 @@ const DesktopTriggerWrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    display: none;
-  }
 `;
 
 const Trigger = styled.button<{
@@ -61,6 +57,7 @@ const Inner = styled.div`
 const wrapperVariants = {
   hidden: {
     width: "auto",
+    height: "auto",
     transition: {
       duration: 1,
       ease: "easeInOut",
@@ -68,6 +65,7 @@ const wrapperVariants = {
   },
   visible: {
     width: "50vw",
+    height: "50vh",
     transition: {
       duration: 1,
       ease: "easeInOut",
@@ -82,7 +80,6 @@ type Props = {
   setPeopleIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
-  readyToInteract: boolean;
   isActive: boolean;
 };
 
@@ -93,12 +90,8 @@ const Title = (props: Props) => {
     setPeopleIsActive,
     setPlacesIsActive,
     setReadyToInteract,
-    readyToInteract,
     isActive,
   } = props;
-
-  console.log("peopleIsActive", peopleIsActive);
-  console.log("placesIsActive", placesIsActive);
 
   return (
     <TitleWrapper $isActive={isActive}>

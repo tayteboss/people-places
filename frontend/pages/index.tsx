@@ -62,7 +62,6 @@ const Page = (props: Props) => {
         setPeopleIsActive={setPeopleIsActive}
         peopleIsActive={peopleIsActive}
         placesIsActive={placesIsActive}
-        readyToInteract={readyToInteract}
         setReadyToInteract={setReadyToInteract}
       />
       <Media

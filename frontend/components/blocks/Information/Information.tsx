@@ -15,7 +15,8 @@ const InformationWrapper = styled(motion.section)`
   padding-bottom: 20vh;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    display: none;
+    padding-top: 15vh;
+    padding-bottom: 15vh;
   }
 `;
 
@@ -26,6 +27,10 @@ const Inner = styled.div`
   justify-content: center;
   align-items: center;
   gap: ${pxToRem(24)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    padding: 0 ${pxToRem(16)};
+  }
 `;
 
 const wrapperVariants = {
@@ -189,10 +194,18 @@ const ListName = styled.p<{ $useCenter: boolean }>`
 const ColumnWrapper = styled.div`
   columns: 3;
   column-gap: ${pxToRem(12)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    column-gap: ${pxToRem(10)};
+  }
 `;
 
 const Column = styled.div`
   min-width: ${pxToRem(150)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    min-width: ${pxToRem(100)};
+  }
 `;
 
 export const Section = (props: {

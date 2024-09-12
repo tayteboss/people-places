@@ -18,6 +18,10 @@ const NavbarWrapper = styled.nav`
 const MenuItems = styled.ul`
   display: flex;
   gap: ${pxToRem(16)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    gap: ${pxToRem(12)};
+  }
 `;
 
 const MenuItem = styled.li`

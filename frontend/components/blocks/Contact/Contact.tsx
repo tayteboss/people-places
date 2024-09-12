@@ -15,6 +15,11 @@ const ContactWrapper = styled(motion.section)`
   justify-content: center;
   align-items: center;
   gap: ${pxToRem(24)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    padding: 0 ${pxToRem(16)};
+    gap: ${pxToRem(16)};
+  }
 `;
 
 const PeopleWrapper = styled.div`
@@ -129,6 +134,10 @@ const SectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    min-width: ${pxToRem(170)};
+  }
 `;
 
 const SectionContent = styled.div`

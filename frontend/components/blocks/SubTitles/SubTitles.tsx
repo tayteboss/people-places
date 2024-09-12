@@ -16,7 +16,8 @@ const SubTitlesWrapper = styled(motion.div)`
   z-index: 20;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    position: absolute;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
   }
 `;
 
