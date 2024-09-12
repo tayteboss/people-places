@@ -11,12 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 const InformationWrapper = styled(motion.section)`
   position: relative;
   z-index: 10;
-  padding-top: 20vh;
-  padding-bottom: 20vh;
+  padding-top: 20lvh;
+  padding-bottom: 20lvh;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-    padding-top: 15vh;
-    padding-bottom: 15vh;
+    padding-top: 15lvh;
+    padding-bottom: 15lvh;
   }
 `;
 

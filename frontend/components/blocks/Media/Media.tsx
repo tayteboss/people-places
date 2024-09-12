@@ -30,8 +30,6 @@ const InnerWrapper = styled(motion.div)`
   left: 0;
   height: 100%;
   width: 100%;
-
-  transition: opacity var(--transition-speed-slow) ease;
 `;
 
 type Props = {

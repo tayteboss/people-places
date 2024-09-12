@@ -110,6 +110,10 @@ const Title = (props: Props) => {
             onMouseOut={() => {
               setPeopleIsActive(false);
             }}
+            onClick={() => {
+              setPeopleIsActive(!peopleIsActive);
+              setPlacesIsActive(false);
+            }}
             $isActive={peopleIsActive || placesIsActive}
             $pointerEventsNone={!isActive}
           >
@@ -130,6 +134,10 @@ const Title = (props: Props) => {
             }}
             onMouseOut={() => {
               setPlacesIsActive(false);
+            }}
+            onClick={() => {
+              setPlacesIsActive(!placesIsActive);
+              setPeopleIsActive(false);
             }}
             $isActive={peopleIsActive || placesIsActive}
             $pointerEventsNone={!isActive}
