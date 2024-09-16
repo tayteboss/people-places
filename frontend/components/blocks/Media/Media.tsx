@@ -190,7 +190,7 @@ const Media = (props: Props) => {
             thumbnailTime={1}
             preload="auto"
             paused={!readyToInteract}
-            muted={true}
+            muted={!soundIsActive}
             playsInline={true}
           />
         )}
