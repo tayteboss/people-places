@@ -196,8 +196,6 @@ const Time = (props: { timezone: string }) => {
 
   const checkIfOffline = (hours: number) => {
     const checkIfBefore9amOrAfter530pm = (hours: number) => {
-      console.log("hours", hours);
-
       return hours < 9 || hours > 17.5;
     };
 

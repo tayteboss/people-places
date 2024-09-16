@@ -74,6 +74,8 @@ const Page = (props: Props) => {
         setPlacesAudioTimeStamp={setPlacesAudioTimeStamp}
         readyToInteract={readyToInteract}
         soundIsActive={soundIsActive}
+        peopleCaptions={data?.peopleSection?.peopleCaptions}
+        placesCaptions={data?.placesSection?.placesCaptions}
       />
       <SubTitles
         peopleAudioTimeStamp={peopleAudioTimeStamp}

@@ -40,6 +40,8 @@ type Props = {
   placesIsActive: boolean;
   readyToInteract: boolean;
   soundIsActive: boolean;
+  peopleCaptions: PeopleType["peopleCaptions"];
+  placesCaptions: PlacesType["placesCaptions"];
   setPeopleAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
   setPlacesAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -55,6 +57,8 @@ const Media = (props: Props) => {
     setPeopleAudioTimeStamp,
     setPlacesAudioTimeStamp,
     soundIsActive,
+    peopleCaptions,
+    placesCaptions,
   } = props;
 
   const peopleAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -66,18 +70,26 @@ const Media = (props: Props) => {
   const peopleTimerRef = useRef<number | null>(null);
   const placesTimerRef = useRef<number | null>(null);
 
+  const peopleCaptionsEnd = peopleCaptions[peopleCaptions.length - 1].end;
+  const placesCaptionsEnd = placesCaptions[placesCaptions.length - 1].end;
+
   // Function to start manual timestamp updates for People Audio
   const startPeopleTimer = () => {
     if (peopleTimerRef.current !== null) return;
     peopleTimerRef.current = window.setInterval(() => {
       peopleTimestampRef.current += 0.1; // Increment by 0.1 seconds
-      if (peopleAudioRef.current) {
+      setPeopleAudioTimeStamp(peopleTimestampRef.current);
+      if (peopleAudioRef.current && peopleAudio) {
         const duration = peopleAudioRef.current.duration;
         if (peopleTimestampRef.current >= duration) {
           peopleTimestampRef.current = 0; // Loop back to start
         }
+      } else {
+        const duration = peopleCaptionsEnd + 5;
+        if (peopleTimestampRef.current >= duration) {
+          peopleTimestampRef.current = 0; // Loop back to start
+        }
       }
-      setPeopleAudioTimeStamp(peopleTimestampRef.current);
     }, 100);
   };
 
@@ -86,13 +98,18 @@ const Media = (props: Props) => {
     if (placesTimerRef.current !== null) return;
     placesTimerRef.current = window.setInterval(() => {
       placesTimestampRef.current += 0.1; // Increment by 0.1 seconds
-      if (placesAudioRef.current) {
+      setPlacesAudioTimeStamp(placesTimestampRef.current);
+      if (placesAudioRef.current && placesAudio) {
         const duration = placesAudioRef.current.duration;
         if (placesTimestampRef.current >= duration) {
           placesTimestampRef.current = 0; // Loop back to start
+        } else {
+          const duration = peopleCaptionsEnd + 5;
+          if (peopleTimestampRef.current >= duration) {
+            peopleTimestampRef.current = 0; // Loop back to start
+          }
         }
       }
-      setPlacesAudioTimeStamp(placesTimestampRef.current);
     }, 100);
   };
 
@@ -100,10 +117,8 @@ const Media = (props: Props) => {
   useEffect(() => {
     const audioElement = peopleAudioRef.current;
 
-    if (!audioElement) return;
-
     if (peopleIsActive) {
-      if (soundIsActive) {
+      if (soundIsActive && audioElement && peopleAudio) {
         audioElement.currentTime = peopleTimestampRef.current;
         audioElement.play();
         if (peopleTimerRef.current !== null) {
@@ -114,11 +129,15 @@ const Media = (props: Props) => {
           setPeopleAudioTimeStamp(audioElement.currentTime);
         }, 100);
       } else {
-        audioElement.pause();
-        startPeopleTimer();
+        if (audioElement && peopleAudio) {
+          audioElement.pause();
+          startPeopleTimer();
+        } else {
+          startPeopleTimer();
+        }
       }
     } else {
-      audioElement.pause();
+      if (audioElement) audioElement.pause();
       if (peopleTimerRef.current !== null) {
         clearInterval(peopleTimerRef.current);
         peopleTimerRef.current = null;
@@ -136,10 +155,8 @@ const Media = (props: Props) => {
   useEffect(() => {
     const audioElement = placesAudioRef.current;
 
-    if (!audioElement) return;
-
     if (placesIsActive) {
-      if (soundIsActive) {
+      if (soundIsActive && audioElement && placesAudio) {
         audioElement.currentTime = placesTimestampRef.current;
         audioElement.play();
         if (placesTimerRef.current !== null) {
@@ -150,11 +167,15 @@ const Media = (props: Props) => {
           setPlacesAudioTimeStamp(audioElement.currentTime);
         }, 100);
       } else {
-        audioElement.pause();
-        startPlacesTimer();
+        if (audioElement && peopleAudio) {
+          audioElement.pause();
+          startPlacesTimer();
+        } else {
+          startPlacesTimer();
+        }
       }
     } else {
-      audioElement.pause();
+      if (audioElement) audioElement.pause();
       if (placesTimerRef.current !== null) {
         clearInterval(placesTimerRef.current);
         placesTimerRef.current = null;
