@@ -26,7 +26,7 @@ const DesktopTriggerWrapper = styled(motion.div)`
   align-items: center;
 `;
 
-const Trigger = styled.button<{
+const Trigger = styled.div<{
   $isActive: boolean;
   $pointerEventsNone: boolean;
 }>`
@@ -34,15 +34,13 @@ const Trigger = styled.button<{
   white-space: pre;
   text-align: center;
   padding: 0 ${pxToRem(64)};
-  color: ${(props) => props.$isActive && "transparent"} !important;
-  -webkit-text-stroke-color: ${(props) =>
-    props.$isActive && "var(--colour-yellow)"} !important;
+  opacity: ${(props) => (props.$isActive ? 0 : 1)};
+  cursor: default;
 
   transition: all var(--transition-speed-slow) var(--transition-ease);
 
   &:hover {
-    color: var(--colour-yellow) !important;
-    -webkit-text-stroke-color: var(--colour-black) !important;
+    opacity: 1 !important;
   }
 `;
 
