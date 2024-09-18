@@ -35,7 +35,7 @@ const Trigger = styled.div<{
   text-align: center;
   padding: 0 ${pxToRem(64)};
   opacity: ${(props) => (props.$isActive ? 0 : 1)};
-  cursor: default;
+  cursor: pointer;
 
   transition: all var(--transition-speed-slow) var(--transition-ease);
 
