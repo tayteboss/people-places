@@ -112,6 +112,8 @@ const Title = (props: Props) => {
     isActive,
   } = props;
 
+  console.log("title");
+
   return (
     <TitleWrapper $isActive={isActive}>
       <DesktopTriggerWrapper
