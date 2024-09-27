@@ -47,7 +47,7 @@ const Trigger = styled.div<{
     width: calc(100% - 128px);
     height: 4px;
     background: var(--colour-yellow);
-    border: 1px solid var(--colour-black);
+    border: 0.5px solid var(--colour-black);
     opacity: 0;
 
     transition: all var(--transition-speed-default) var(--transition-ease);
