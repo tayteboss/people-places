@@ -131,7 +131,7 @@ export const GlobalStyles = createGlobalStyle`
 	}
 
 	.outline-text {
-		-webkit-text-stroke: 1px black;
+		-webkit-text-stroke: 0.5px black;
 		font-weight: 200;
 
 		@media ${theme.mediaBreakpoints.tabletPortrait} {

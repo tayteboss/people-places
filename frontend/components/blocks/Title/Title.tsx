@@ -11,7 +11,6 @@ const TitleWrapper = styled.div<{ $isActive: boolean }>`
   position: fixed;
   z-index: 20;
   pointer-events: none;
-  opacity: ${(props) => (props.$isActive ? 1 : 0)};
 
   transition: all var(--transition-speed-slow) var(--transition-ease);
 
@@ -34,13 +33,35 @@ const Trigger = styled.div<{
   white-space: pre;
   text-align: center;
   padding: 0 ${pxToRem(64)};
-  opacity: ${(props) => (props.$isActive ? 0 : 1)};
   cursor: pointer;
+  position: relative;
 
   transition: all var(--transition-speed-slow) var(--transition-ease);
 
+  &::after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 128px);
+    height: 4px;
+    background: var(--colour-yellow);
+    border: 1px solid var(--colour-black);
+    opacity: 0;
+
+    transition: all var(--transition-speed-default) var(--transition-ease);
+
+    @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+      height: 2.5px;
+      border: 0.5px solid var(--colour-black);
+    }
+  }
+
   &:hover {
-    opacity: 1 !important;
+    &::after {
+      opacity: 1;
+    }
   }
 `;
 
