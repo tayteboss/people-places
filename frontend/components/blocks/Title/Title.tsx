@@ -78,7 +78,7 @@ const wrapperVariants = {
     width: "auto",
     height: "auto",
     transition: {
-      duration: 1,
+      duration: 0.5,
       ease: "easeInOut",
     },
   },
@@ -86,7 +86,7 @@ const wrapperVariants = {
     width: "50vw",
     height: "50vh",
     transition: {
-      duration: 1,
+      duration: 0.5,
       ease: "easeInOut",
       delay: 1.5,
     },
@@ -111,8 +111,6 @@ const Title = (props: Props) => {
     setReadyToInteract,
     isActive,
   } = props;
-
-  console.log("title");
 
   return (
     <TitleWrapper $isActive={isActive}>
