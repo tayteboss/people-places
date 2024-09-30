@@ -11,6 +11,7 @@ const TitleWrapper = styled.div<{ $isActive: boolean }>`
   position: fixed;
   z-index: 20;
   pointer-events: none;
+  opacity: ${(props) => (props.$isActive ? 1 : 0)};
 
   transition: all var(--transition-speed-slow) var(--transition-ease);
 
