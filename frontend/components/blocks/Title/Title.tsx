@@ -26,44 +26,13 @@ const DesktopTriggerWrapper = styled(motion.div)`
   align-items: center;
 `;
 
-const Trigger = styled.div<{
-  $isActive: boolean;
-  $pointerEventsNone: boolean;
-}>`
-  pointer-events: ${(props) => (props.$pointerEventsNone ? "none" : "all")};
+const Trigger = styled.div`
+  pointer-events: none;
   white-space: pre;
   text-align: center;
   padding: 0 ${pxToRem(64)};
   cursor: pointer;
   position: relative;
-
-  transition: all var(--transition-speed-slow) var(--transition-ease);
-
-  &::after {
-    position: absolute;
-    content: "";
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 128px);
-    height: 4px;
-    background: var(--colour-yellow);
-    border: 0.5px solid var(--colour-black);
-    opacity: 0;
-
-    transition: all var(--transition-speed-default) var(--transition-ease);
-
-    @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
-      height: 2.5px;
-      border: 0.5px solid var(--colour-black);
-    }
-  }
-
-  &:hover {
-    &::after {
-      opacity: 1;
-    }
-  }
 `;
 
 const Inner = styled.div`
@@ -95,23 +64,12 @@ const wrapperVariants = {
 };
 
 type Props = {
-  peopleIsActive: boolean;
-  placesIsActive: boolean;
-  setPeopleIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlacesIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReadyToInteract: React.Dispatch<React.SetStateAction<boolean>>;
   isActive: boolean;
 };
 
 const Title = (props: Props) => {
-  const {
-    peopleIsActive,
-    placesIsActive,
-    setPeopleIsActive,
-    setPlacesIsActive,
-    setReadyToInteract,
-    isActive,
-  } = props;
+  const { setReadyToInteract, isActive } = props;
 
   return (
     <TitleWrapper $isActive={isActive}>
@@ -122,23 +80,7 @@ const Title = (props: Props) => {
         onAnimationComplete={() => setReadyToInteract(true)}
       >
         <Inner>
-          <Trigger
-            className={`${peopleIsActive || placesIsActive} type-h1 outline-text`}
-            onMouseEnter={() => {
-              setPeopleIsActive(true);
-            }}
-            onMouseOut={() => {
-              setPeopleIsActive(false);
-            }}
-            onClick={() => {
-              setPeopleIsActive(!peopleIsActive);
-              setPlacesIsActive(false);
-            }}
-            $isActive={peopleIsActive || placesIsActive}
-            $pointerEventsNone={!isActive}
-          >
-            People
-          </Trigger>
+          <Trigger className={`type-h1 outline-text`}>People</Trigger>
         </Inner>
       </DesktopTriggerWrapper>
       <DesktopTriggerWrapper
@@ -147,23 +89,7 @@ const Title = (props: Props) => {
         animate="visible"
       >
         <Inner>
-          <Trigger
-            className={`${peopleIsActive || placesIsActive} type-h1 outline-text`}
-            onMouseEnter={() => {
-              setPlacesIsActive(true);
-            }}
-            onMouseOut={() => {
-              setPlacesIsActive(false);
-            }}
-            onClick={() => {
-              setPlacesIsActive(!placesIsActive);
-              setPeopleIsActive(false);
-            }}
-            $isActive={peopleIsActive || placesIsActive}
-            $pointerEventsNone={!isActive}
-          >
-            Places
-          </Trigger>
+          <Trigger className={`type-h1 outline-text`}>Places</Trigger>
         </Inner>
       </DesktopTriggerWrapper>
     </TitleWrapper>

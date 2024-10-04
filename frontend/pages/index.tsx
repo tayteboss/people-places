@@ -34,10 +34,7 @@ type Props = {
 const Page = (props: Props) => {
   const { data, siteSettings, pageTransitionVariants } = props;
 
-  const [peopleIsActive, setPeopleIsActive] = useState(false);
-  const [placesIsActive, setPlacesIsActive] = useState(false);
-  const [peopleAudioTimeStamp, setPeopleAudioTimeStamp] = useState(0);
-  const [placesAudioTimeStamp, setPlacesAudioTimeStamp] = useState(0);
+  const [heroMediaTimestamp, setHeroMediaTimestamp] = useState(0);
   const [readyToInteract, setReadyToInteract] = useState(false);
   const [tabActive, setTabActive] = useState("home");
   const [soundIsActive, setSoundIsActive] = useState(false);
@@ -58,32 +55,19 @@ const Page = (props: Props) => {
       />
       <Title
         isActive={tabActive === "home"}
-        setPlacesIsActive={setPlacesIsActive}
-        setPeopleIsActive={setPeopleIsActive}
-        peopleIsActive={peopleIsActive}
-        placesIsActive={placesIsActive}
         setReadyToInteract={setReadyToInteract}
       />
       <Media
-        peopleAudio={data?.peopleSection?.peopleAudio}
-        placesAudio={data?.placesSection?.placesAudio}
-        heroMedia={data?.heroMedia}
-        peopleIsActive={peopleIsActive}
-        placesIsActive={placesIsActive}
-        setPeopleAudioTimeStamp={setPeopleAudioTimeStamp}
-        setPlacesAudioTimeStamp={setPlacesAudioTimeStamp}
         readyToInteract={readyToInteract}
+        setHeroMediaTimestamp={setHeroMediaTimestamp}
+        heroMedia={data?.heroMedia}
+        heroCaptions={data?.heroCaptions}
         soundIsActive={soundIsActive}
-        peopleCaptions={data?.peopleSection?.peopleCaptions}
-        placesCaptions={data?.placesSection?.placesCaptions}
       />
       <SubTitles
-        peopleAudioTimeStamp={peopleAudioTimeStamp}
-        placesAudioTimeStamp={placesAudioTimeStamp}
-        peopleIsActive={peopleIsActive}
-        placesIsActive={placesIsActive}
-        peopleCaptions={data?.peopleSection?.peopleCaptions}
-        placesCaptions={data?.placesSection?.placesCaptions}
+        isActive={tabActive === "home"}
+        heroCaptions={data?.heroCaptions}
+        heroMediaTimestamp={heroMediaTimestamp}
       />
 
       <Navbar

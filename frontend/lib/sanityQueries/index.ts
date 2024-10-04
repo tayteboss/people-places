@@ -42,6 +42,7 @@ export const siteSettingsQueryString = `
 
 export const homePageQueryString = `
 	*[_type == 'homePage'][0] {
+		...,
 		seoTitle,
 		seoDescription,
 		heroMedia {

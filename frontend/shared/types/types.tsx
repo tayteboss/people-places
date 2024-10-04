@@ -74,6 +74,7 @@ export type HomePageType = {
   seoTitle: string;
   seoDescription: string;
   heroMedia: MediaType;
+  heroCaptions: CaptionType[];
   peopleSection: PeopleType;
   placesSection: PlacesType;
 };

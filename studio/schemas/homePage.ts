@@ -30,46 +30,76 @@ export default {
       type: 'mux.video',
     },
     {
+      title: 'Hero Captions',
+      name: 'heroCaptions',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          icon: TextIcon,
+          fields: [
+            {
+              title: 'Caption',
+              name: 'caption',
+              type: 'string',
+            },
+            {
+              title: 'Start',
+              name: 'start',
+              type: 'number',
+              description: 'e.g. 1.5',
+            },
+            {
+              title: 'End',
+              name: 'end',
+              type: 'number',
+              description: 'e.g. 5',
+            },
+          ],
+        },
+      ],
+    },
+    {
       title: 'People Section',
       name: 'peopleSection',
       type: 'object',
       fields: [
-        {
-          title: 'Audio',
-          name: 'peopleAudio',
-          type: 'file',
-          accepts: 'audio/*',
-        },
-        {
-          title: 'Captions',
-          name: 'peopleCaptions',
-          type: 'array',
-          of: [
-            {
-              type: 'object',
-              icon: TextIcon,
-              fields: [
-                {
-                  title: 'Caption',
-                  name: 'caption',
-                  type: 'string',
-                },
-                {
-                  title: 'Start',
-                  name: 'start',
-                  type: 'number',
-                  description: 'e.g. 1.5',
-                },
-                {
-                  title: 'End',
-                  name: 'end',
-                  type: 'number',
-                  description: 'e.g. 5',
-                },
-              ],
-            },
-          ],
-        },
+        // {
+        //   title: 'Audio',
+        //   name: 'peopleAudio',
+        //   type: 'file',
+        //   accepts: 'audio/*',
+        // },
+        // {
+        //   title: 'Captions',
+        //   name: 'peopleCaptions',
+        //   type: 'array',
+        //   of: [
+        //     {
+        //       type: 'object',
+        //       icon: TextIcon,
+        //       fields: [
+        //         {
+        //           title: 'Caption',
+        //           name: 'caption',
+        //           type: 'string',
+        //         },
+        //         {
+        //           title: 'Start',
+        //           name: 'start',
+        //           type: 'number',
+        //           description: 'e.g. 1.5',
+        //         },
+        //         {
+        //           title: 'End',
+        //           name: 'end',
+        //           type: 'number',
+        //           description: 'e.g. 5',
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
         {
           title: 'Location Title',
           name: 'peopleLocationTitle',
@@ -87,42 +117,42 @@ export default {
       name: 'placesSection',
       type: 'object',
       fields: [
-        {
-          title: 'Audio',
-          name: 'placesAudio',
-          type: 'file',
-          accepts: 'audio/*',
-        },
-        {
-          title: 'Captions',
-          name: 'placesCaptions',
-          type: 'array',
-          of: [
-            {
-              type: 'object',
-              icon: TextIcon,
-              fields: [
-                {
-                  title: 'Caption',
-                  name: 'caption',
-                  type: 'string',
-                },
-                {
-                  title: 'Start',
-                  name: 'start',
-                  type: 'number',
-                  description: 'e.g. 1.5',
-                },
-                {
-                  title: 'End',
-                  name: 'end',
-                  type: 'number',
-                  description: 'e.g. 5',
-                },
-              ],
-            },
-          ],
-        },
+        // {
+        //   title: 'Audio',
+        //   name: 'placesAudio',
+        //   type: 'file',
+        //   accepts: 'audio/*',
+        // },
+        // {
+        //   title: 'Captions',
+        //   name: 'placesCaptions',
+        //   type: 'array',
+        //   of: [
+        //     {
+        //       type: 'object',
+        //       icon: TextIcon,
+        //       fields: [
+        //         {
+        //           title: 'Caption',
+        //           name: 'caption',
+        //           type: 'string',
+        //         },
+        //         {
+        //           title: 'Start',
+        //           name: 'start',
+        //           type: 'number',
+        //           description: 'e.g. 1.5',
+        //         },
+        //         {
+        //           title: 'End',
+        //           name: 'end',
+        //           type: 'number',
+        //           description: 'e.g. 5',
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
         {
           title: 'Location Title',
           name: 'placesLocationTitle',

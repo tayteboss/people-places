@@ -11,7 +11,6 @@ const SubTitlesWrapper = styled(motion.div)`
   transform: translateX(-50%);
   width: 100%;
   max-width: ${pxToRem(900)};
-  width: 100%;
   padding: 0 ${pxToRem(32)};
   z-index: 20;
 
@@ -21,7 +20,11 @@ const SubTitlesWrapper = styled(motion.div)`
   }
 `;
 
-const Captions = styled.h2``;
+const Captions = styled.h2<{ $isActive: boolean }>`
+  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+`;
 
 const wrapperVariants = {
   hidden: {
@@ -43,25 +46,12 @@ const wrapperVariants = {
 };
 
 type Props = {
-  peopleAudioTimeStamp: number;
-  placesAudioTimeStamp: number;
-  peopleIsActive: boolean;
-  placesIsActive: boolean;
-  peopleCaptions: CaptionType[];
-  placesCaptions: CaptionType[];
+  heroCaptions: CaptionType[];
+  heroMediaTimestamp: number;
+  isActive: boolean;
 };
 
-const SubTitles = (props: Props) => {
-  const {
-    peopleAudioTimeStamp,
-    placesAudioTimeStamp,
-    peopleIsActive,
-    placesIsActive,
-    peopleCaptions,
-    placesCaptions,
-  } = props;
-
-  // Function to get the current subtitle based on the timestamp and the captions array
+const SubTitles = ({ heroCaptions, heroMediaTimestamp, isActive }: Props) => {
   const getCurrentSubtitle = (
     captions: CaptionType[],
     currentTime: number
@@ -72,27 +62,18 @@ const SubTitles = (props: Props) => {
     return currentSub ? currentSub.caption : "";
   };
 
-  // Get the current subtitles for both people and places videos
-  const peopleSubtitle = getCurrentSubtitle(
-    peopleCaptions,
-    peopleAudioTimeStamp
-  );
-  const placesSubtitle = getCurrentSubtitle(
-    placesCaptions,
-    placesAudioTimeStamp
-  );
+  const currentSubtitle = getCurrentSubtitle(heroCaptions, heroMediaTimestamp);
 
   return (
     <SubTitlesWrapper
       variants={wrapperVariants}
       initial="hidden"
-      animate={peopleIsActive || placesIsActive ? "visible" : "hidden"}
+      animate={currentSubtitle ? "visible" : "hidden"}
     >
-      {peopleIsActive && (
-        <Captions className="outline-text">{peopleSubtitle}</Captions>
-      )}
-      {placesIsActive && (
-        <Captions className="outline-text">{placesSubtitle}</Captions>
+      {currentSubtitle && (
+        <Captions className="outline-text" $isActive={isActive}>
+          {currentSubtitle}
+        </Captions>
       )}
     </SubTitlesWrapper>
   );

@@ -1,10 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
-import {
-  HomePageType,
-  PeopleType,
-  PlacesType,
-} from "../../../shared/types/types";
+import { useEffect } from "react";
+import { HomePageType } from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react";
 import { motion } from "framer-motion";
 
@@ -33,161 +29,39 @@ const InnerWrapper = styled(motion.div)`
 `;
 
 type Props = {
-  peopleAudio: PeopleType["peopleAudio"];
-  placesAudio: PlacesType["placesAudio"];
   heroMedia: HomePageType["heroMedia"];
-  peopleIsActive: boolean;
-  placesIsActive: boolean;
-  readyToInteract: boolean;
+  heroCaptions: HomePageType["heroCaptions"];
   soundIsActive: boolean;
-  peopleCaptions: PeopleType["peopleCaptions"];
-  placesCaptions: PlacesType["placesCaptions"];
-  setPeopleAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
-  setPlacesAudioTimeStamp: React.Dispatch<React.SetStateAction<number>>;
+  setHeroMediaTimestamp: React.Dispatch<React.SetStateAction<number>>;
+  readyToInteract: boolean;
 };
 
-const Media = (props: Props) => {
-  const {
-    peopleAudio,
-    placesAudio,
-    heroMedia,
-    peopleIsActive,
-    placesIsActive,
-    readyToInteract,
-    setPeopleAudioTimeStamp,
-    setPlacesAudioTimeStamp,
-    soundIsActive,
-    peopleCaptions,
-    placesCaptions,
-  } = props;
-
-  const peopleAudioRef = useRef<HTMLAudioElement | null>(null);
-  const placesAudioRef = useRef<HTMLAudioElement | null>(null);
-
-  const peopleTimestampRef = useRef<number>(0);
-  const placesTimestampRef = useRef<number>(0);
-
-  const peopleTimerRef = useRef<number | null>(null);
-  const placesTimerRef = useRef<number | null>(null);
-
-  const peopleCaptionsEnd = peopleCaptions[peopleCaptions.length - 1].end;
-  const placesCaptionsEnd = placesCaptions[placesCaptions.length - 1].end;
-
-  // Function to start manual timestamp updates for People Audio
-  const startPeopleTimer = () => {
-    if (peopleTimerRef.current !== null) return;
-    peopleTimerRef.current = window.setInterval(() => {
-      peopleTimestampRef.current += 0.1; // Increment by 0.1 seconds
-      setPeopleAudioTimeStamp(peopleTimestampRef.current);
-      if (peopleAudioRef.current && peopleAudio) {
-        const duration = peopleAudioRef.current.duration;
-        if (peopleTimestampRef.current >= duration) {
-          peopleTimestampRef.current = 0; // Loop back to start
-        }
-      } else {
-        const duration = peopleCaptionsEnd + 5;
-        if (peopleTimestampRef.current >= duration) {
-          peopleTimestampRef.current = 0; // Loop back to start
-        }
-      }
-    }, 100);
-  };
-
-  // Function to start manual timestamp updates for Places Audio
-  const startPlacesTimer = () => {
-    if (placesTimerRef.current !== null) return;
-    placesTimerRef.current = window.setInterval(() => {
-      placesTimestampRef.current += 0.1; // Increment by 0.1 seconds
-      setPlacesAudioTimeStamp(placesTimestampRef.current);
-      if (placesAudioRef.current && placesAudio) {
-        const duration = placesAudioRef.current.duration;
-        if (placesTimestampRef.current >= duration) {
-          placesTimestampRef.current = 0; // Loop back to start
-        } else {
-          const duration = peopleCaptionsEnd + 5;
-          if (peopleTimestampRef.current >= duration) {
-            peopleTimestampRef.current = 0; // Loop back to start
-          }
-        }
-      }
-    }, 100);
-  };
-
-  // Handle People Audio Play/Pause and Time Stamp
+const Media = ({
+  heroMedia,
+  heroCaptions,
+  readyToInteract,
+  soundIsActive,
+  setHeroMediaTimestamp,
+}: Props) => {
   useEffect(() => {
-    const audioElement = peopleAudioRef.current;
+    const video = document.querySelector<HTMLVideoElement>("mux-player");
 
-    if (peopleIsActive) {
-      if (soundIsActive && audioElement && peopleAudio) {
-        audioElement.currentTime = peopleTimestampRef.current;
-        audioElement.play();
-        if (peopleTimerRef.current !== null) {
-          clearInterval(peopleTimerRef.current);
-          peopleTimerRef.current = null;
-        }
-        window.setInterval(() => {
-          setPeopleAudioTimeStamp(audioElement.currentTime);
-        }, 100);
-      } else {
-        if (audioElement && peopleAudio) {
-          audioElement.pause();
-          startPeopleTimer();
-        } else {
-          startPeopleTimer();
-        }
-      }
-    } else {
-      if (audioElement) audioElement.pause();
-      if (peopleTimerRef.current !== null) {
-        clearInterval(peopleTimerRef.current);
-        peopleTimerRef.current = null;
-      }
+    const syncCaptionsAndTimestamp = () => {
+      const currentTime = video?.currentTime ?? 0;
+
+      setHeroMediaTimestamp(currentTime);
+    };
+
+    if (video) {
+      video.addEventListener("timeupdate", syncCaptionsAndTimestamp);
     }
 
     return () => {
-      if (peopleTimerRef.current !== null) {
-        clearInterval(peopleTimerRef.current);
+      if (video) {
+        video.removeEventListener("timeupdate", syncCaptionsAndTimestamp);
       }
     };
-  }, [peopleIsActive, soundIsActive, setPeopleAudioTimeStamp]);
-
-  // Handle Places Audio Play/Pause and Time Stamp
-  useEffect(() => {
-    const audioElement = placesAudioRef.current;
-
-    if (placesIsActive) {
-      if (soundIsActive && audioElement && placesAudio) {
-        audioElement.currentTime = placesTimestampRef.current;
-        audioElement.play();
-        if (placesTimerRef.current !== null) {
-          clearInterval(placesTimerRef.current);
-          placesTimerRef.current = null;
-        }
-        window.setInterval(() => {
-          setPlacesAudioTimeStamp(audioElement.currentTime);
-        }, 100);
-      } else {
-        if (audioElement && peopleAudio) {
-          audioElement.pause();
-          startPlacesTimer();
-        } else {
-          startPlacesTimer();
-        }
-      }
-    } else {
-      if (audioElement) audioElement.pause();
-      if (placesTimerRef.current !== null) {
-        clearInterval(placesTimerRef.current);
-        placesTimerRef.current = null;
-      }
-    }
-
-    return () => {
-      if (placesTimerRef.current !== null) {
-        clearInterval(placesTimerRef.current);
-      }
-    };
-  }, [placesIsActive, soundIsActive, setPlacesAudioTimeStamp]);
+  }, [heroCaptions, setHeroMediaTimestamp]);
 
   return (
     <MediaWrapper>
@@ -215,20 +89,6 @@ const Media = (props: Props) => {
             playsInline={true}
           />
         )}
-        <audio
-          ref={peopleAudioRef}
-          src={peopleAudio?.asset?.url}
-          preload="auto"
-          loop
-          muted={!soundIsActive}
-        />
-        <audio
-          ref={placesAudioRef}
-          src={placesAudio?.asset?.url}
-          preload="auto"
-          loop
-          muted={!soundIsActive}
-        />
       </InnerWrapper>
     </MediaWrapper>
   );
