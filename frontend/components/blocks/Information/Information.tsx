@@ -88,15 +88,15 @@ const Information = (props: Props) => {
         >
           <Inner>
             <Section title="People, Places" content={introduction} />
-            <Section title="Team" list={team} />
+            <Section title="Services" list={services} useColumn />
+            <Section title="Clients" list={clients} useColumn />
+            <Section title="Credits" list={team} />
             <LocationSection
               title1={peopleLocationTitle}
               title2={placesLocationTitle}
               address1={peopleLocationAddress}
               address2={placesLocationAddress}
             />
-            <Section title="Services" list={services} useColumn />
-            <Section title="Clients" list={clients} useCenter />
             {acknowledgementOfCountry && (
               <Section
                 title="Acknowledgement of Country"
@@ -117,9 +117,11 @@ const SectionWrapper = styled.div`
   align-items: center;
   gap: ${pxToRem(24)};
   width: 30vw;
+  min-width: ${pxToRem(470)};
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
     width: 100%;
+    min-width: auto;
   }
 `;
 
@@ -216,19 +218,41 @@ export const Section = (props: {
   useColumn?: boolean;
 }) => {
   const { title, content, list, useCenter, useColumn } = props;
+
   return (
     <SectionWrapper>
       <SectionTitle className="type-p">{title}</SectionTitle>
       {content && <SectionContent>{content}</SectionContent>}
       {useColumn && list && list.length > 0 && (
         <ColumnWrapper>
-          {list.map((item, i) => (
-            <Column key={i}>
-              <ListName $useCenter={true}>
-                <>{item || ""}</>
-              </ListName>
-            </Column>
-          ))}
+          {list.map((item, i) => {
+            return (
+              <Column key={i}>
+                <ListName $useCenter={true}>
+                  {typeof item === "object" && (item?.name || item?.link) ? (
+                    <>
+                      {item?.link && (
+                        <ListLink
+                          $useCenter={useCenter || false}
+                          href={item?.link || ""}
+                          target="_blank"
+                        >
+                          {item?.name || ""}
+                        </ListLink>
+                      )}
+                      {item?.name && !item?.link && (
+                        <ListName $useCenter={useCenter || false}>
+                          {item?.name}
+                        </ListName>
+                      )}
+                    </>
+                  ) : (
+                    <>{item}</>
+                  )}
+                </ListName>
+              </Column>
+            );
+          })}
         </ColumnWrapper>
       )}
       {!useColumn && list && list.length > 0 && (
