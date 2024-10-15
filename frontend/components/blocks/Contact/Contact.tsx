@@ -24,7 +24,7 @@ const ContactWrapper = styled(motion.section)`
 
 const PeopleWrapper = styled.div`
   display: flex;
-  gap: ${pxToRem(12)};
+  gap: ${pxToRem(16)};
 `;
 
 const SocialWrapper = styled.div`
@@ -155,6 +155,7 @@ const ItemLink = styled.a`
   font-family: var(--font-default);
   color: var(--colour-yellow);
   text-decoration: none;
+  white-space: nowrap;
 
   &:hover {
     text-decoration: underline;
